@@ -72,6 +72,17 @@
             $(button).removeClass('btn-outline-danger').addClass('btn-danger');
           }
         }
+      },
+      error: function(xhr) {
+        let errorMsg = 'Không thể kết nối máy chủ.';
+        if (xhr.status === 403) {
+          errorMsg = 'Bạn không có quyền thực hiện chức năng này.';
+        } else if (xhr.status === 419) {
+          errorMsg = 'Phiên làm việc đã hết hạn. Vui lòng tải lại trang.';
+        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMsg = xhr.responseJSON.message;
+        }
+        alert('Lỗi: ' + errorMsg);
       }
     });
   }

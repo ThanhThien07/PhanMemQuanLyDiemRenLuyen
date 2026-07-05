@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Controller xử lý xác thực người dùng (Authentication).
+ * Đăng nhập, đăng ký và đăng xuất cho các vai trò sinh viên, cán sự, cố vấn và admin.
+ */
 class AuthController extends Controller
 {
     /**
-     * Hiển thị giao diện đăng nhập
+     * Hiển thị giao diện đăng nhập.
+     * Nếu người dùng đã đăng nhập trước đó, chuyển hướng về trang Dashboard.
      */
     public function showLogin()
     {
@@ -21,7 +26,8 @@ class AuthController extends Controller
     }
 
     /**
-     * Xử lý đăng nhập
+     * Xử lý gửi yêu cầu đăng nhập.
+     * Kiểm tra thông tin email, password và lưu thông tin đăng nhập.
      */
     public function login(Request $request)
     {
@@ -50,7 +56,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Hiển thị giao diện đăng ký
+     * Hiển thị giao diện đăng ký tài khoản mới.
      */
     public function showRegister()
     {
@@ -58,7 +64,8 @@ class AuthController extends Controller
     }
 
     /**
-     * Xử lý đăng ký tài khoản mới
+     * Xử lý đăng ký tài khoản người dùng mới.
+     * Tự động liên kết vai trò của người dùng với hệ thống phân quyền của Laravel.
      */
     public function register(Request $request)
     {
@@ -86,11 +93,13 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
+        // Gán vai trò thông qua quan hệ nhiều-nhiều
         $roleModel = \App\Models\Role::where('name', $request->role)->first();
         if ($roleModel) {
             $user->roles()->attach($roleModel->id);
         }
 
+        // Tự động đăng nhập sau khi đăng ký thành công
         Auth::login($user);
 
         $roleName = $this->getRoleNameVi($user->role);
@@ -99,7 +108,8 @@ class AuthController extends Controller
     }
 
     /**
-     * Xử lý đăng xuất
+     * Đăng xuất tài khoản người dùng hiện tại.
+     * Hủy phiên (session) hoạt động và làm mới mã token bảo mật.
      */
     public function logout(Request $request)
     {
@@ -112,7 +122,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Helper dịch vai trò sang Tiếng Việt
+     * Chuyển đổi tên vai trò từ cơ sở dữ liệu sang tên Tiếng Việt thân thiện với người dùng.
      */
     private function getRoleNameVi($role)
     {
