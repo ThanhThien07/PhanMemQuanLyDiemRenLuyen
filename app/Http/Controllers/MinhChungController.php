@@ -109,7 +109,11 @@ class MinhChungController extends Controller
         // Xử lý upload file
         $file = $request->file("file_minh_chung");
         $fileName = time() . "_" . $file->getClientOriginalName();
-        $file->move(public_path("uploads/minh_chung"), $fileName);
+        $uploadPath = public_path("uploads/minh_chung");
+        if (!file_exists($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
+        $file->move($uploadPath, $fileName);
         $filePath = "uploads/minh_chung/" . $fileName;
 
         // Lưu thông tin vào DB sử dụng Transaction
@@ -165,10 +169,8 @@ class MinhChungController extends Controller
         $hoSo->nguoi_duyet_id = Auth::id();
         $hoSo->save();
 
-        // Nếu minh chứng được phê duyệt, tự động chạy hàm tính lại điểm
-        if ($request->trang_thai === "da_duyet") {
-            DiemRenLuyenService::recalculatePoints($hoSo->sinh_vien_id);
-        }
+        // Tự động chạy hàm tính lại điểm của sinh viên khi cập nhật trạng thái minh chứng
+        DiemRenLuyenService::recalculatePoints($hoSo->sinh_vien_id);
 
         return response()->json(["success" => true]);
     }

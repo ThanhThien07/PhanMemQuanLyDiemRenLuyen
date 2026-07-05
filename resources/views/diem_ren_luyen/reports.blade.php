@@ -125,7 +125,7 @@
             <option value="Tốt" {{ request('xep_loai') === 'Tốt' ? 'selected' : '' }}>Tốt</option>
             <option value="Khá" {{ request('xep_loai') === 'Khá' ? 'selected' : '' }}>Khá</option>
             <option value="Trung bình" {{ request('xep_loai') === 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-            <option value="Yêu" {{ request('xep_loai') === 'Yêu' ? 'selected' : '' }}>Yếu / Kém</option>
+            <option value="Yếu" {{ request('xep_loai') === 'Yếu' ? 'selected' : '' }}>Yếu / Kém</option>
           </select>
         </div>
         <div class="col-md-3">
@@ -204,7 +204,7 @@
                   <td><strong>{{ $r->sinhVien->ma_sv }}</strong></td>
                   <td>{{ $r->sinhVien->ho_ten }}</td>
                   <td>{{ $r->sinhVien->lop->ten_lop }}</td>
-                  <td>{{ $r->sinhVien->lop->khoa->ten_khoa ?? 'N/A' }}</td>
+                  <td>{{ $r->sinhVien->lop->nganh->khoa->ten_khoa ?? 'N/A' }}</td>
                   <td class="text-center fw-semibold">{{ $r->tong_diem_tieu_chi }}</td>
                   <td class="text-center fw-semibold text-muted">{{ number_format($r->diem_hoc_tap_quy_doi, 2) }}</td>
                   <td class="text-center fw-bold text-primary">{{ number_format($r->diem_tong_hop, 2) }}</td>

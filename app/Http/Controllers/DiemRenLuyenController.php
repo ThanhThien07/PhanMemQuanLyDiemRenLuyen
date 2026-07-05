@@ -127,8 +127,8 @@ class DiemRenLuyenController extends Controller
             });
         }
         if ($request->filled('khoa_hoc')) {
-            $query->whereHas('sinhVien', function($q) use ($request) {
-                $q->where('khoa_hoc', $request->khoa_hoc);
+            $query->whereHas('sinhVien.lop.khoaHoc', function($q) use ($request) {
+                $q->where('ma_khoa_hoc', $request->khoa_hoc);
             });
         }
         if ($request->filled('he_dao_tao_id')) {
@@ -241,7 +241,7 @@ class DiemRenLuyenController extends Controller
             });
         }
         if ($request->filled('khoa_id')) {
-            $query->whereHas('sinhVien.lop', function($q) use ($request) {
+            $query->whereHas('sinhVien.lop.nganh', function($q) use ($request) {
                 $q->where('khoa_id', $request->khoa_id);
             });
         }
@@ -251,8 +251,8 @@ class DiemRenLuyenController extends Controller
             });
         }
         if ($request->filled('khoa_hoc')) {
-            $query->whereHas('sinhVien', function($q) use ($request) {
-                $q->where('khoa_hoc', $request->khoa_hoc);
+            $query->whereHas('sinhVien.lop.khoaHoc', function($q) use ($request) {
+                $q->where('ma_khoa_hoc', $request->khoa_hoc);
             });
         }
         if ($request->filled('he_dao_tao_id')) {
@@ -307,7 +307,7 @@ class DiemRenLuyenController extends Controller
                     $r->sinhVien->ma_sv,
                     $r->sinhVien->ho_ten,
                     $r->sinhVien->lop->ten_lop,
-                    $r->sinhVien->lop->khoa->ten_khoa ?? 'N/A',
+                    $r->sinhVien->lop->nganh->khoa->ten_khoa ?? 'N/A',
                     $r->hocKy->ten_hoc_ky,
                     $r->tong_diem_tieu_chi,
                     $r->diem_hoc_tap_quy_doi,

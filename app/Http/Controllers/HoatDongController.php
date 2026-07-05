@@ -114,6 +114,8 @@ class HoatDongController extends Controller
             ->where("hoat_dong_id", $id)
             ->delete();
 
+        \App\Services\DiemRenLuyenService::recalculatePoints($sinhVien->id);
+
         return back()->with("success", "Đã hủy đăng ký hoạt động.");
     }
 

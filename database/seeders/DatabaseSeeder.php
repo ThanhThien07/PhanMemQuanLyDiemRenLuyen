@@ -33,7 +33,8 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Seed Roles
         $roles = [
-            ['name' => 'admin', 'display_name' => 'Phòng Công tác sinh viên (CTSV)'],
+            ['name' => 'admin', 'display_name' => 'Quản trị viên hệ thống'],
+            ['name' => 'ctsv', 'display_name' => 'Phòng Công tác sinh viên (CTSV)'],
             ['name' => 'sinh_vien', 'display_name' => 'Sinh viên'],
             ['name' => 'ban_can_su', 'display_name' => 'Ban cán sự lớp'],
             ['name' => 'co_van', 'display_name' => 'Cố vấn học tập'],
@@ -48,10 +49,16 @@ class DatabaseSeeder extends Seeder
         // 2. Create Users
         $usersData = [
             [
-                'name' => 'Phòng Công tác sinh viên (Admin)',
-                'email' => 'ctsv@sv.com',
+                'name' => 'Quản trị viên',
+                'email' => 'admin@sv.com',
                 'password' => Hash::make('password'),
                 'role' => 'admin'
+            ],
+            [
+                'name' => 'Phòng Công tác sinh viên (CTSV)',
+                'email' => 'ctsv@sv.com',
+                'password' => Hash::make('password'),
+                'role' => 'ctsv'
             ],
             [
                 'name' => 'Nguyễn Văn A (Sinh viên)',
@@ -140,7 +147,7 @@ class DatabaseSeeder extends Seeder
         $donVi = DonViToChuc::create([
             'ma_don_vi' => 'CTSV',
             'ten_don_vi' => 'Phòng Công tác sinh viên (CTSV)',
-            'user_id' => $users['admin']->id
+            'user_id' => $users['ctsv']->id
         ]);
 
         // 11. HocKy

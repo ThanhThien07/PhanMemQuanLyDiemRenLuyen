@@ -60,7 +60,9 @@ class AuthController extends Controller
      */
     public function showRegister()
     {
-        return view('auth.register');
+        $lops = \App\Models\Lop::orderBy('ten_lop', 'asc')->get();
+        $heDaoTaos = \App\Models\HeDaoTao::all();
+        return view('auth.register', compact('lops', 'heDaoTaos'));
     }
 
     /**
@@ -69,12 +71,20 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $request->validate([
+        $rules = [
             'name' => 'required|string|max:100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|string|in:admin,sinh_vien,ban_can_su,co_van',
-        ], [
+            'role' => 'required|string|in:admin,ctsv,sinh_vien,ban_can_su,co_van',
+        ];
+
+        if ($request->role === 'sinh_vien' || $request->role === 'ban_can_su') {
+            $rules['ma_sv'] = 'required|string|max:50|unique:sinh_viens,ma_sv';
+            $rules['lop_id'] = 'required|exists:lops,id';
+            $rules['he_dao_tao_id'] = 'required|exists:he_dao_taos,id';
+        }
+
+        $request->validate($rules, [
             'name.required' => 'Họ tên không được để trống.',
             'email.required' => 'Email không được để trống.',
             'email.email' => 'Email không đúng định dạng.',
@@ -84,20 +94,40 @@ class AuthController extends Controller
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
             'role.required' => 'Vui lòng chọn vai trò.',
             'role.in' => 'Vai trò không hợp lệ.',
+            'ma_sv.required' => 'Mã sinh viên không được để trống.',
+            'ma_sv.unique' => 'Mã sinh viên này đã tồn tại trong hệ thống.',
+            'lop_id.required' => 'Vui lòng chọn lớp học.',
+            'lop_id.exists' => 'Lớp học không hợp lệ.',
+            'he_dao_tao_id.required' => 'Vui lòng chọn hệ đào tạo.',
+            'he_dao_tao_id.exists' => 'Hệ đào tạo không hợp lệ.',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        $user = \Illuminate\Support\Facades\DB::transaction(function() use ($request) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+            ]);
 
-        // Gán vai trò thông qua quan hệ nhiều-nhiều
-        $roleModel = \App\Models\Role::where('name', $request->role)->first();
-        if ($roleModel) {
-            $user->roles()->attach($roleModel->id);
-        }
+            // Gán vai trò thông qua quan hệ nhiều-nhiều
+            $roleModel = \App\Models\Role::where('name', $request->role)->first();
+            if ($roleModel) {
+                $user->roles()->attach($roleModel->id);
+            }
+
+            if ($request->role === 'sinh_vien' || $request->role === 'ban_can_su') {
+                \App\Models\SinhVien::create([
+                    'user_id' => $user->id,
+                    'ma_sv' => $request->ma_sv,
+                    'ho_ten' => $request->name,
+                    'lop_id' => $request->lop_id,
+                    'he_dao_tao_id' => $request->he_dao_tao_id,
+                ]);
+            }
+
+            return $user;
+        });
 
         // Tự động đăng nhập sau khi đăng ký thành công
         Auth::login($user);

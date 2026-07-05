@@ -5,7 +5,7 @@
   <div class="card-premium p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h3 class="fw-bold text-dark mb-0"><i class="bi bi-check-square me-2 text-primary"></i>Quy trình xét duyệt điểm rèn luyện</h3>
-      @if(Auth::user()->role === 'admin')
+      @if(in_array(Auth::user()->role, ['admin', 'ctsv']))
         <a href="{{ route('xet_duyet.phan_cong') }}" class="btn btn-premium btn-sm fw-bold">
           <i class="bi bi-person-badge-fill me-2"></i>Phân công Cố vấn học tập
         </a>
@@ -55,7 +55,7 @@
                       $canCheck = true;
                   } elseif ($user->role === 'co_van' && $drl->trang_thai_duyet === 'cho_cvht_duyet') {
                       $canCheck = true;
-                  } elseif ($user->role === 'admin' && $drl->trang_thai_duyet !== 'da_khoa') {
+                  } elseif (in_array($user->role, ['admin', 'ctsv']) && $drl->trang_thai_duyet !== 'da_khoa') {
                       $canCheck = true;
                   }
                 @endphp
@@ -94,13 +94,13 @@
                       <a href="{{ route('xet_duyet.review_evaluation', $drl->id) }}" class="btn btn-sm btn-outline-primary fw-bold me-1"><i class="bi bi-list-check"></i> Chi tiết</a>
                       <button type="button" class="btn btn-sm btn-warning fw-bold" onclick="updateStage({{ $drl->id }}, 'cho_ctsv_duyet')">Duyệt & Gửi CTSV</button>
                       <button type="button" class="btn btn-sm btn-outline-danger fw-bold ms-1" onclick="updateStage({{ $drl->id }}, 'tam_tinh')">Trả lại Lớp</button>
-                    @elseif(Auth::user()->role === 'admin' && $drl->trang_thai_duyet === 'cho_ctsv_duyet')
+                    @elseif(in_array(Auth::user()->role, ['admin', 'ctsv']) && $drl->trang_thai_duyet === 'cho_ctsv_duyet')
                       <a href="{{ route('xet_duyet.review_evaluation', $drl->id) }}" class="btn btn-sm btn-outline-primary fw-bold me-1"><i class="bi bi-list-check"></i> Chi tiết</a>
                       <button type="button" class="btn btn-sm btn-success fw-bold" onclick="updateStage({{ $drl->id }}, 'da_khoa')">Phê duyệt & Khóa</button>
                       <button type="button" class="btn btn-sm btn-outline-danger fw-bold ms-1" onclick="updateStage({{ $drl->id }}, 'cho_cvht_duyet')">Trả lại Cố vấn</button>
                     @else
                       <a href="{{ route('xet_duyet.review_evaluation', $drl->id) }}" class="btn btn-sm btn-outline-secondary fw-bold me-1"><i class="bi bi-eye"></i> Xem chi tiết</a>
-                      @if(Auth::user()->role === 'admin' && $drl->trang_thai_duyet === 'da_khoa')
+                      @if(in_array(Auth::user()->role, ['admin', 'ctsv']) && $drl->trang_thai_duyet === 'da_khoa')
                         <button type="button" class="btn btn-sm btn-outline-danger fw-bold" onclick="unlockRecord({{ $drl->id }})">
                           <i class="bi bi-unlock-fill"></i> Mở khóa
                         </button>

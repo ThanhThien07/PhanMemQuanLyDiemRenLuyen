@@ -56,9 +56,37 @@
           <option value="sinh_vien" style="background: #111; color: #fff;">Sinh viên</option>
           <option value="ban_can_su" style="background: #111; color: #fff;">Ban cán sự lớp</option>
           <option value="co_van" style="background: #111; color: #fff;">Cố vấn học tập</option>
-          <option value="admin" style="background: #111; color: #fff;">Phòng Công tác sinh viên (CTSV)</option>
+          <option value="ctsv" style="background: #111; color: #fff;">Phòng Công tác sinh viên (CTSV)</option>
+          <option value="admin" style="background: #111; color: #fff;">Quản trị viên</option>
         </select>
       </div>
+
+      <!-- Student profile fields (Shown dynamically using JS) -->
+      <div id="student-fields" class="d-none">
+        <div class="mb-4">
+          <label class="form-label text-white/80 text-sm fw-semibold">Mã sinh viên</label>
+          <input type="text" name="ma_sv" class="form-control-custom-dark" placeholder="SV220101" value="{{ old('ma_sv') }}">
+        </div>
+        <div class="mb-4">
+          <label class="form-label text-white/80 text-sm fw-semibold">Lớp học</label>
+          <select name="lop_id" class="form-select-custom-dark" style="color: #fff;">
+            <option value="" style="background: #111; color: #fff;">-- Chọn lớp học --</option>
+            @foreach($lops as $lop)
+              <option value="{{ $lop->id }}" style="background: #111; color: #fff;" {{ old('lop_id') == $lop->id ? 'selected' : '' }}>{{ $lop->ten_lop }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="form-label text-white/80 text-sm fw-semibold">Hệ đào tạo</label>
+          <select name="he_dao_tao_id" class="form-select-custom-dark" style="color: #fff;">
+            <option value="" style="background: #111; color: #fff;">-- Chọn hệ đào tạo --</option>
+            @foreach($heDaoTaos as $hdt)
+              <option value="{{ $hdt->id }}" style="background: #111; color: #fff;" {{ old('he_dao_tao_id') == $hdt->id ? 'selected' : '' }}>{{ $hdt->ten_he }}</option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+
       <div class="mb-4">
         <label class="form-label text-white/80 text-sm fw-semibold">Mật khẩu</label>
         <input type="password" name="password" class="form-control-custom-dark" placeholder="Tối thiểu 6 ký tự" required>
@@ -75,5 +103,33 @@
       <a href="{{ route('login') }}" class="text-decoration-none fw-semibold text-warning hover:text-warning/80 transition duration-200" style="color: #d4af37 !important;">Đăng nhập ngay</a>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const roleSelect = document.querySelector('select[name="role"]');
+      const studentFields = document.getElementById('student-fields');
+      const maSvInput = document.querySelector('input[name="ma_sv"]');
+      const lopSelect = document.querySelector('select[name="lop_id"]');
+      const heDaoTaoSelect = document.querySelector('select[name="he_dao_tao_id"]');
+
+      function toggleStudentFields() {
+        const val = roleSelect.value;
+        if (val === 'sinh_vien' || val === 'ban_can_su') {
+          studentFields.classList.remove('d-none');
+          maSvInput.required = true;
+          lopSelect.required = true;
+          heDaoTaoSelect.required = true;
+        } else {
+          studentFields.classList.add('d-none');
+          maSvInput.required = false;
+          lopSelect.required = false;
+          heDaoTaoSelect.required = false;
+        }
+      }
+
+      roleSelect.addEventListener('change', toggleStudentFields);
+      toggleStudentFields(); // Run on initial load
+    });
+  </script>
 </body>
 </html>

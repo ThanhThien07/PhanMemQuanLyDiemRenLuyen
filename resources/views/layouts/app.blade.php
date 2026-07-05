@@ -75,7 +75,8 @@
                 <span class="hidden md:inline text-slate-700 font-semibold" style="font-size: 14px;">
                   {{ Auth::user()->name }} 
                   <span class="badge bg-secondary ml-1" style="font-size:10px;">
-                    @if(Auth::user()->role === 'admin') QL/CTSV
+                    @if(Auth::user()->role === 'admin') Quản trị viên
+                    @elseif(Auth::user()->role === 'ctsv') Phòng CTSV
                     @elseif(Auth::user()->role === 'sinh_vien') Sinh viên
                     @elseif(Auth::user()->role === 'ban_can_su') BCS Lớp
                     @elseif(Auth::user()->role === 'co_van') Cố vấn học tập
@@ -132,7 +133,7 @@
             </a>
           </li>
 
-          @if(Auth::user()->role === 'admin' || Auth::user()->role === 'co_van' || Auth::user()->role === 'ban_can_su')
+          @if(in_array(Auth::user()->role, ['admin', 'ctsv', 'co_van', 'ban_can_su']))
             <li>
               <a href="{{ route('xet_duyet.index') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('xet_duyet.*') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
                 <i class="bi bi-clipboard-check mr-3 text-lg"></i>
@@ -148,7 +149,7 @@
             </a>
           </li>
 
-          @if(Auth::user()->role === 'admin' || Auth::user()->role === 'co_van')
+          @if(in_array(Auth::user()->role, ['admin', 'ctsv', 'co_van']))
             <li>
               <a href="{{ route('diem_ren_luyen.report') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.report') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
                 <i class="bi bi-file-earmark-bar-graph mr-3 text-lg"></i>
@@ -157,7 +158,7 @@
             </li>
           @endif
 
-          @if(Auth::user()->role === 'admin')
+          @if(in_array(Auth::user()->role, ['admin', 'ctsv']))
             <li>
               <a href="{{ route('hoc_ky.settings') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('hoc_ky.settings') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
                 <i class="bi bi-gear mr-3 text-lg"></i>

@@ -131,7 +131,11 @@ class KhieuNaiController extends Controller
             if ($request->hasFile("file_khieu_nai")) {
                 $file = $request->file("file_khieu_nai");
                 $fileName = time() . "_" . $file->getClientOriginalName();
-                $file->move(public_path("uploads/khieu_nai"), $fileName);
+                $uploadPath = public_path("uploads/khieu_nai");
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                $file->move($uploadPath, $fileName);
                 $filePath = "uploads/khieu_nai/" . $fileName;
 
                 $mc = MinhChung::create([

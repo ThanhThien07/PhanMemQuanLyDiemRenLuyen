@@ -105,18 +105,79 @@ class DiemRenLuyenService
         }
 
         // 11. Lưu hoặc cập nhật kết quả vào bảng điểm rèn luyện
-        DiemRenLuyen::updateOrCreate([
-            "sinh_vien_id" => $sinhVienId,
-            "hoc_ky_id" => $latestSemester->id,
-        ], [
-            "tong_diem_tieu_chi" => $totalCriteriaPoints,
-            "diem_hoc_tap_quy_doi" => $gpaPoints,
-            "diem_tong_hop" => $totalScore,
-            "xep_loai" => $grading,
-            // Giữ lại trạng thái duyệt cũ nếu đã có, ngược lại mặc định là 'tam_tinh'
-            "trang_thai_duyet" => DiemRenLuyen::where("sinh_vien_id", $sinhVienId)
-                ->where("hoc_ky_id", $latestSemester->id)
-                ->value("trang_thai_duyet") ?: "tam_tinh"
-        ]);
+        $diemRenLuyen = DiemRenLuyen::where("sinh_vien_id", $sinhVienId)
+            ->where("hoc_ky_id", $latestSemester->id)
+            ->first();
+
+        $hasDetails = false;
+        if ($diemRenLuyen) {
+            $hasDetails = \App\Models\ChiTietDiemRenLuyen::where('diem_ren_luyen_id', $diemRenLuyen->id)->exists();
+        }
+
+        if ($hasDetails) {
+            // Recalculate based on detailed criteria
+            $details = \App\Models\ChiTietDiemRenLuyen::where('diem_ren_luyen_id', $diemRenLuyen->id)->get()->keyBy('ma_tieu_chi');
+            $status = $diemRenLuyen->trang_thai_duyet;
+            
+            // Choose the appropriate score column to sum
+            $scoreColumn = 'diem_sv';
+            if ($status === 'cho_cvht_duyet') {
+                $scoreColumn = 'diem_bcs';
+            } elseif (in_array($status, ['cho_ctsv_duyet', 'da_khoa'])) {
+                $scoreColumn = 'diem_cvht';
+            }
+
+            $criteria = \App\Helpers\EvaluationCriteria::getCriteria();
+            $sectionScores = [];
+            $totalSum = 0;
+
+            foreach ($criteria as $sectionKey => $section) {
+                $sectionScores[$sectionKey] = 0;
+                foreach ($section['items'] as $itemKey => $item) {
+                    $detail = $details->get($itemKey);
+                    $score = $detail ? floatval($detail->$scoreColumn) : 0;
+                    $sectionScores[$sectionKey] += $score;
+                }
+                if ($sectionScores[$sectionKey] > $section['max_score']) {
+                    $sectionScores[$sectionKey] = $section['max_score'];
+                }
+                $totalSum += $sectionScores[$sectionKey];
+            }
+
+            $finalTotal = min(100, $totalSum);
+            
+            $grading = "Yếu";
+            if ($finalTotal >= 90) {
+                $grading = "Xuất sắc";
+            } elseif ($finalTotal >= 80) {
+                $grading = "Tốt";
+            } elseif ($finalTotal >= 65) {
+                $grading = "Khá";
+            } elseif ($finalTotal >= 50) {
+                $grading = "Trung bình";
+            }
+
+            $gpaDetail = $details->get('I.2');
+            $gpaScore = $gpaDetail ? floatval($gpaDetail->$scoreColumn) : 0;
+
+            $diemRenLuyen->update([
+                "tong_diem_tieu_chi" => max(0, $finalTotal - $gpaScore),
+                "diem_hoc_tap_quy_doi" => $gpaScore,
+                "diem_tong_hop" => $finalTotal,
+                "xep_loai" => $grading
+            ]);
+        } else {
+            // Fallback to simplified calculation
+            DiemRenLuyen::updateOrCreate([
+                "sinh_vien_id" => $sinhVienId,
+                "hoc_ky_id" => $latestSemester->id,
+            ], [
+                "tong_diem_tieu_chi" => $totalCriteriaPoints,
+                "diem_hoc_tap_quy_doi" => $gpaPoints,
+                "diem_tong_hop" => $totalScore,
+                "xep_loai" => $grading,
+                "trang_thai_duyet" => $diemRenLuyen ? $diemRenLuyen->trang_thai_duyet : "tam_tinh"
+            ]);
+        }
     }
 }
