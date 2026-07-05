@@ -69,17 +69,16 @@
     @csrf
     <div class="row">
       <!-- Main Spreadsheet Evaluation Form -->
-      <div class="col-lg-9 print-full-width">
+      <div class="col-lg-12">
         <div class="card-premium p-4 mb-4 print-no-border">
           <div class="table-responsive">
             <table class="table table-bordered align-middle print-table" style="border-color: #ccc;">
               <thead class="table-light">
                 <tr class="text-center" style="font-size: 13px;">
                   <th style="width: 5%;">STT</th>
-                  <th style="width: 45%;" class="text-start">Nội dung đánh giá (Theo mẫu biểu chi tiết)</th>
-                  <th style="width: 8%;">Điểm trần</th>
-                  <th style="width: 15%;" class="no-print">Gợi ý tự động</th>
-                  <th style="width: 12%;">Tự đánh giá</th>
+                  <th style="width: 55%;" class="text-start">Nội dung đánh giá (Theo mẫu biểu chi tiết)</th>
+                  <th style="width: 10%;">Điểm trần</th>
+                  <th style="width: 15%;">Tự đánh giá</th>
                   <th style="width: 15%;">Minh chứng / Ghi chú</th>
                 </tr>
               </thead>
@@ -91,9 +90,10 @@
                     <td colspan="2">
                       {{ $section['name'] }}
                     </td>
-                    <td class="no-print"></td>
-                    <td class="text-center font-monospace small print-only">Max {{ $section['max_score'] }}đ</td>
-                    <td colspan="2" class="text-end text-primary no-print">Tối đa {{ $section['max_score'] }} điểm</td>
+                    <td colspan="2" class="text-end text-primary">
+                      <span class="no-print">Tối đa {{ $section['max_score'] }} điểm</span>
+                      <span class="print-only text-dark">Max {{ $section['max_score'] }}đ</span>
+                    </td>
                   </tr>
 
                   @foreach($section['items'] as $itemKey => $item)
@@ -134,18 +134,16 @@
                       <td>
                         <span class="fw-medium">{{ $item['name'] }}</span>
                         <div class="small text-muted no-print">{{ $item['description'] }}</div>
-                      </td>
-                      <td class="text-center fw-bold text-secondary">{{ $item['max_score'] }}</td>
-                      <td class="no-print">
                         @if($suggestionText)
-                          <span class="badge bg-light-primary text-dark border p-1 small" style="font-size: 11px; display: block; white-space: normal;">
-                            <i class="bi bi-magic me-1 text-primary"></i> {{ $suggestionText }}
-                          </span>
-                            <button type="button" class="btn btn-sm btn-outline-primary py-0 px-1 mt-1" style="font-size: 10px;" onclick="applySuggestion('{{ $itemKey }}', {{ $suggestedScore }})">Áp dụng gợi ý</button>
-                        @else
-                          <span class="text-muted small">-</span>
+                          <div class="mt-2 no-print">
+                            <span class="badge bg-sky-50 text-sky-700 border border-sky-100 p-1.5 small inline-flex items-center gap-1" style="font-size: 11px; display: inline-block; white-space: normal; text-align: left;">
+                              <i class="bi bi-magic"></i> Gợi ý: {{ $suggestionText }}
+                            </span>
+                            <button type="button" class="btn-outline-primary py-0.5 px-2 ms-2" style="font-size: 10px; border-radius: 6px;" onclick="applySuggestion('{{ $itemKey }}', {{ $suggestedScore }})">Áp dụng</button>
+                          </div>
                         @endif
                       </td>
+                      <td class="text-center fw-bold text-secondary">{{ $item['max_score'] }}</td>
                       <td>
                         <div class="input-group input-group-sm no-print">
                           <input type="number" 
@@ -173,7 +171,6 @@
                     <td></td>
                     <td class="text-end">Cộng tiêu chí {{ $secKey }}:</td>
                     <td class="text-center text-primary" id="section-max-{{ $secKey }}">{{ $section['max_score'] }}</td>
-                    <td class="no-print"></td>
                     <td class="text-center text-primary font-monospace" id="section-total-{{ $secKey }}">0.00</td>
                     <td><span class="small text-muted no-print" id="section-cap-msg-{{ $secKey }}"></span></td>
                   </tr>
@@ -184,7 +181,6 @@
                   <td class="text-center"></td>
                   <td class="text-end text-dark">TỔNG ĐIỂM RÈN LUYỆN CẢ HỌC KỲ (Khống chế tối đa 100đ):</td>
                   <td class="text-center text-dark">100</td>
-                  <td class="no-print"></td>
                   <td class="text-center text-primary font-monospace fs-5" id="print-overall-total-val">0.0</td>
                   <td id="print-overall-class-val" class="text-center text-primary fw-bold">Yếu</td>
                 </tr>
@@ -218,46 +214,6 @@
         </div>
       </div>
 
-      <!-- Right Summary Panel -->
-      <div class="col-lg-3 no-print">
-        <div class="sticky-top" style="top: 90px; z-index: 1000;">
-          <div class="card-premium p-4 mb-4">
-            <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-calculator me-2"></i>Bảng Tổng Hợp</h5>
-            
-            @foreach($criteria as $secKey => $section)
-              <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                <span class="small text-secondary">Mục {{ $secKey }} (Tối đa {{ $section['max_score'] }}):</span>
-                <span class="fw-bold text-dark font-monospace" id="side-total-{{ $secKey }}">0.0</span>
-              </div>
-            @endforeach
-
-            <div class="p-3 bg-light rounded-3 mt-3">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="small text-secondary fw-bold">Điểm tổng cộng:</span>
-                <span class="h4 fw-bold text-primary mb-0 font-monospace" id="side-overall-total">0.0</span>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="small text-secondary">Xếp loại:</span>
-                <span class="badge bg-success badge-premium" id="side-overall-class">Yếu</span>
-              </div>
-              <div class="small text-muted mt-2" style="font-size: 10px;">
-                * Điểm tổng cộng được làm tròn và khống chế tối đa không vượt quá 100 điểm.
-              </div>
-            </div>
-          </div>
-
-          <div class="card-premium p-4">
-            <h5 class="fw-bold mb-2 text-dark"><i class="bi bi-lightbulb me-2"></i>Quy định xếp loại</h5>
-            <ul class="list-unstyled mb-0 small text-secondary">
-              <li class="mb-1"><span class="badge bg-success py-1 px-2">Xuất sắc</span> &ge; 90 điểm</li>
-              <li class="mb-1"><span class="badge bg-info text-dark py-1 px-2">Tốt</span> 80 &rarr; 89 điểm</li>
-              <li class="mb-1"><span class="badge bg-warning text-dark py-1 px-2">Khá</span> 65 &rarr; 79 điểm</li>
-              <li class="mb-1"><span class="badge bg-secondary py-1 px-2">Trung bình</span> 50 &rarr; 64 điểm</li>
-              <li><span class="badge bg-danger py-1 px-2">Yếu</span> &lt; 50 điểm</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   </form>
 
