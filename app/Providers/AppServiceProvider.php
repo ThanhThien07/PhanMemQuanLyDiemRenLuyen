@@ -27,16 +27,34 @@ class AppServiceProvider extends ServiceProvider
                 $migrationFiles = glob(database_path('migrations/*.php'));
                 $hash = md5(implode('', $migrationFiles));
 
-                if (Cache::get('migrations_hash') !== $hash) {
+                if (Cache::get('migrations_hash_v2') !== $hash) {
                     Artisan::call('migrate', ['--force' => true]);
-                    Cache::forever('migrations_hash', $hash);
+
+                    // Seed database if empty
+                    try {
+                        if (\App\Models\User::count() === 0) {
+                            Artisan::call('db:seed', ['--force' => true]);
+                        }
+                    } catch (\Throwable $seederError) {
+                        // Ignore seeder errors
+                    }
+
+                    Cache::forever('migrations_hash_v2', $hash);
                 }
             } catch (\Throwable $e) {
                 // If cache fails (e.g. database not migrated yet), we run migrations anyway
                 try {
                     Artisan::call('migrate', ['--force' => true]);
+
+                    // Seed database if empty
                     try {
-                        Cache::forever('migrations_hash', md5(implode('', glob(database_path('migrations/*.php')))));
+                        if (\App\Models\User::count() === 0) {
+                            Artisan::call('db:seed', ['--force' => true]);
+                        }
+                    } catch (\Throwable $seederError) {}
+
+                    try {
+                        Cache::forever('migrations_hash_v2', md5(implode('', glob(database_path('migrations/*.php')))));
                     } catch (\Throwable $ex) {}
                 } catch (\Throwable $ex) {
                     // Ignore if database is not reachable/configured yet during build
