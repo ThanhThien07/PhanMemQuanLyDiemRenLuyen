@@ -232,28 +232,6 @@
       <!-- Right Summary Panel -->
       <div class="col-lg-3 no-print">
         <div class="sticky-top" style="top: 90px; z-index: 1000;">
-          <div class="card-premium p-4 mb-4">
-            <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-calculator me-2"></i>Bảng Tổng Hợp</h5>
-            
-            @foreach($criteria as $secKey => $section)
-              <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                <span class="small text-secondary">Mục {{ $secKey }} (Tối đa {{ $section['max_score'] }}):</span>
-                <span class="fw-bold text-dark font-monospace" id="side-total-{{ $secKey }}">0.0</span>
-              </div>
-            @endforeach
-
-            <div class="p-3 bg-light rounded-3 mt-3">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="small text-secondary fw-bold">Điểm tổng cộng:</span>
-                <span class="h4 fw-bold text-primary mb-0 font-monospace" id="side-overall-total">0.0</span>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="small text-secondary">Xếp loại:</span>
-                <span class="badge bg-success badge-premium" id="side-overall-class">Yếu</span>
-              </div>
-            </div>
-          </div>
-
           <!-- Student Activities Reference Panel -->
           <div class="card-premium p-4">
             <h5 class="fw-bold mb-2 text-dark"><i class="bi bi-bookmark-star me-2"></i>Hoạt động đã tham gia</h5>
