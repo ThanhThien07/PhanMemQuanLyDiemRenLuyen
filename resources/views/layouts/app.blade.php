@@ -13,14 +13,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- Vite compiled Tailwind CSS and JS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Premium Custom Styles -->
+    <style>
     <!-- Premium Custom Styles -->
     <style>
       :root {
-        --ms-primary: #0ea5e9; /* Sky Blue (Xanh lam hình 1) */
-        --ms-secondary: #38bdf8; /* Lighter Sky Blue (Xanh dương nhạt) */
-        --ms-dark: #0f172a;
-        --ms-light: #f8fafc;
-        --ms-sidebar: #0f172a;
         --font-outfit: 'Outfit', sans-serif;
       }
 
@@ -29,148 +29,6 @@
         background-color: #f1f5f9;
         color: #1e293b;
         overflow-x: hidden;
-      }
-
-      .ms-header {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-bottom: 2px solid #e2e8f0;
-        color: #0f172a;
-        height: 70px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1030;
-      }
-
-      .brand-title {
-        font-weight: 800;
-        font-size: 20px;
-        letter-spacing: 1px;
-        color: #0f172a;
-      }
-
-      .brand-title span {
-        color: var(--ms-primary);
-      }
-
-      .ms-sidebar {
-        background-color: var(--ms-sidebar);
-        width: 260px;
-        position: fixed;
-        top: 70px;
-        bottom: 0;
-        left: 0;
-        z-index: 1020;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
-        padding-top: 20px;
-        transition: all 0.3s ease;
-      }
-
-      .nav-menu {
-        padding: 0;
-        list-style: none;
-      }
-
-      .nav-menu-item {
-        margin-bottom: 5px;
-      }
-
-      .nav-menu-link {
-        display: flex;
-        align-items: center;
-        padding: 12px 20px;
-        color: #c9c9c9;
-        text-decoration: none;
-        font-weight: 500;
-        border-left: 4px solid transparent;
-        transition: all 0.2s ease;
-      }
-
-      .nav-menu-link i {
-        font-size: 18px;
-        margin-right: 15px;
-        transition: transform 0.2s ease;
-      }
-
-      .nav-menu-link:hover {
-        background-color: rgba(255, 255, 255, 0.03);
-        color: var(--ms-secondary);
-        border-left-color: var(--ms-secondary);
-      }
-
-      .nav-menu-link:hover i {
-        transform: scale(1.15);
-      }
-
-      .nav-menu-link.active {
-        background-color: rgba(14, 165, 233, 0.1);
-        color: var(--ms-secondary);
-        border-left-color: var(--ms-secondary);
-        font-weight: 600;
-      }
-
-      .nav-menu-link.active i {
-        color: var(--ms-secondary);
-      }
-
-      .ms-main {
-        margin-left: 260px;
-        margin-top: 70px;
-        padding: 30px 40px;
-        min-height: calc(100vh - 70px);
-        transition: all 0.3s ease;
-      }
-
-      .card-premium {
-        background: white;
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        overflow: hidden;
-      }
-
-      .card-premium:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 35px rgba(14, 165, 233, 0.08);
-      }
-
-      .card-premium-header {
-        background: transparent;
-        border-bottom: 1px solid #f0edf4;
-        padding: 20px 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .card-premium-title {
-        font-weight: 700;
-        font-size: 18px;
-        color: var(--ms-primary);
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .btn-premium {
-        background-color: var(--ms-primary);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 10px 20px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-      }
-
-      .btn-premium:hover {
-        background-color: #0284c7; /* Darker Sky Blue (Xanh lam hình 2) */
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
       }
 
       #userMenu {
@@ -182,56 +40,35 @@
         color: #0f172a !important;
       }
 
-      .badge-premium {
-        border-radius: 8px;
-        padding: 6px 12px;
-        font-weight: 600;
-        font-size: 12px;
-      }
-
-      .ms-footer {
-        background: var(--ms-sidebar);
-        color: #999;
-        text-align: center;
-        padding: 20px 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        font-size: 13px;
-        margin-left: 260px;
-      }
-
       @media (max-width: 991.98px) {
         .ms-sidebar {
-          margin-left: -260px;
+          margin-left: -260px !important;
         }
         .ms-sidebar.active {
-          margin-left: 0;
-        }
-        .ms-main, .ms-footer {
-          margin-left: 0;
+          margin-left: 0 !important;
         }
       }
     </style>
   </head>
   <body>
     <!-- Top Header -->
-    <header class="ms-header d-flex align-items-center px-4">
-      <div class="d-flex align-items-center w-100 justify-content-between">
-        <div class="d-flex align-items-center">
-          <button class="btn btn-outline-dark d-lg-none me-3" id="sidebarToggle">
+    <header class="fixed top-0 left-0 right-0 h-[70px] z-[1030] bg-white/95 border-b-2 border-slate-200 flex items-center px-6 shadow-sm backdrop-blur-md">
+        <div class="flex items-center">
+          <button class="inline-flex items-center justify-center p-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 lg:hidden mr-3 cursor-pointer" id="sidebarToggle">
             <i class="bi bi-list"></i>
           </button>
-          <div class="brand-title">
-            <i class="bi bi-mortarboard-fill me-2 text-primary"></i>ĐIỂM RÈN LUYỆN <span>SV</span>
+          <div class="font-bold text-lg text-slate-800 tracking-wider">
+            <i class="bi bi-mortarboard-fill mr-2 text-sky-500"></i>ĐIỂM RÈN LUYỆN <span class="text-sky-500">SV</span>
           </div>
         </div>
-        <div class="d-flex align-items-center gap-3">
+        <div class="flex items-center gap-3">
           @auth
             <div class="dropdown">
-              <a href="#" class="d-flex align-items-center gap-2 text-decoration-none dropdown-toggle px-3 py-2 rounded" id="userMenu" data-bs-toggle="dropdown">
-                <i class="bi bi-person-circle fs-5 text-primary"></i>
-                <span class="d-none d-md-inline text-dark fw-semibold">
+              <a href="#" class="flex items-center gap-2 text-decoration-none dropdown-toggle px-3 py-2 rounded" id="userMenu" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle text-xl text-sky-500"></i>
+                <span class="hidden md:inline text-slate-700 font-semibold">
                   {{ Auth::user()->name }} 
-                  <span class="badge bg-secondary ms-1" style="font-size:10px;">
+                  <span class="badge bg-secondary ml-1" style="font-size:10px;">
                     @if(Auth::user()->role === 'admin') QL/CTSV
                     @elseif(Auth::user()->role === 'sinh_vien') Sinh viên
                     @elseif(Auth::user()->role === 'ban_can_su') BCS Lớp
@@ -253,8 +90,8 @@
               </ul>
             </div>
           @else
-            <a href="{{ route('login') }}" class="btn btn-outline-dark border-0 d-flex align-items-center gap-2">
-              <i class="bi bi-box-arrow-in-right fs-5"></i>
+            <a href="{{ route('login') }}" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition duration-200 text-decoration-none">
+              <i class="bi bi-box-arrow-in-right text-lg"></i>
               <span>Đăng nhập</span>
             </a>
           @endauth
@@ -263,70 +100,70 @@
     </header>
 
     <!-- Navigation Sidebar -->
-    <aside class="ms-sidebar" style="overflow-y: auto;">
+    <aside class="fixed top-[70px] bottom-0 left-0 w-[260px] z-[1020] bg-slate-900 border-r border-slate-800 pt-4 transition-all duration-300 overflow-y-auto ms-sidebar">
       @auth
-        <div class="px-3 pt-2 pb-1 text-uppercase text-secondary small fw-bold" style="font-size: 11px; letter-spacing: 1px;">
-          <i class="bi bi-sliders me-1 text-info"></i>Chức năng chính
+        <div class="px-5 pt-2 pb-2 text-uppercase text-slate-400 font-bold tracking-wider" style="font-size: 11px;">
+          <i class="bi bi-sliders mr-2 text-sky-400"></i>Chức năng chính
         </div>
-        <ul class="nav-menu mb-3">
-          <li class="nav-menu-item">
-            <a href="{{ route('dashboard') }}" class="nav-menu-link {{ Route::is('dashboard') ? 'active' : '' }}">
-              <i class="bi bi-speedometer2"></i>
+        <ul class="flex flex-col mb-3 p-0 list-none">
+          <li class="mb-1">
+            <a href="{{ route('dashboard') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('dashboard') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+              <i class="bi bi-speedometer2 mr-3 text-lg"></i>
               <span>Bảng điều khiển</span>
             </a>
           </li>
           
-          <li class="nav-menu-item">
-            <a href="{{ route('hoat_dong.index') }}" class="nav-menu-link {{ Route::is('hoat_dong.*') ? 'active' : '' }}">
-              <i class="bi bi-calendar-event"></i>
+          <li class="mb-1">
+            <a href="{{ route('hoat_dong.index') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('hoat_dong.*') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+              <i class="bi bi-calendar-event mr-3 text-lg"></i>
               <span>Hoạt động rèn luyện</span>
             </a>
           </li>
 
-          <li class="nav-menu-item">
-            <a href="{{ route('minh_chung.index') }}" class="nav-menu-link {{ Route::is('minh_chung.*') ? 'active' : '' }}">
-              <i class="bi bi-file-earmark-check"></i>
+          <li class="mb-1">
+            <a href="{{ route('minh_chung.index') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('minh_chung.*') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+              <i class="bi bi-file-earmark-check mr-3 text-lg"></i>
               <span>Nộp / Duyệt minh chứng</span>
             </a>
           </li>
 
           @if(Auth::user()->role === 'admin' || Auth::user()->role === 'co_van' || Auth::user()->role === 'ban_can_su')
-            <li class="nav-menu-item">
-              <a href="{{ route('xet_duyet.index') }}" class="nav-menu-link {{ Route::is('xet_duyet.*') ? 'active' : '' }}">
-                <i class="bi bi-clipboard-check"></i>
+            <li class="mb-1">
+              <a href="{{ route('xet_duyet.index') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('xet_duyet.*') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+                <i class="bi bi-clipboard-check mr-3 text-lg"></i>
                 <span>Xét duyệt điểm lớp</span>
               </a>
             </li>
           @endif
 
-          <li class="nav-menu-item">
-            <a href="{{ route('diem_ren_luyen.index') }}" class="nav-menu-link {{ Route::is('diem_ren_luyen.index') ? 'active' : '' }}">
-              <i class="bi bi-journal-text"></i>
+          <li class="mb-1">
+            <a href="{{ route('diem_ren_luyen.index') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.index') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+              <i class="bi bi-journal-text mr-3 text-lg"></i>
               <span>Bảng điểm rèn luyện</span>
             </a>
           </li>
 
           @if(Auth::user()->role === 'admin' || Auth::user()->role === 'co_van')
-            <li class="nav-menu-item">
-              <a href="{{ route('diem_ren_luyen.report') }}" class="nav-menu-link {{ Route::is('diem_ren_luyen.report') ? 'active' : '' }}">
-                <i class="bi bi-file-earmark-bar-graph"></i>
+            <li class="mb-1">
+              <a href="{{ route('diem_ren_luyen.report') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.report') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+                <i class="bi bi-file-earmark-bar-graph mr-3 text-lg"></i>
                 <span>Báo cáo & Thống kê</span>
               </a>
             </li>
           @endif
 
           @if(Auth::user()->role === 'admin')
-            <li class="nav-menu-item">
-              <a href="{{ route('hoc_ky.settings') }}" class="nav-menu-link {{ Route::is('hoc_ky.settings') ? 'active' : '' }}">
-                <i class="bi bi-gear"></i>
+            <li class="mb-1">
+              <a href="{{ route('hoc_ky.settings') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('hoc_ky.settings') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+                <i class="bi bi-gear mr-3 text-lg"></i>
                 <span>Cấu hình Học kỳ</span>
               </a>
             </li>
           @endif
 
-          <li class="nav-menu-item">
-            <a href="{{ route('khieu_nai.index') }}" class="nav-menu-link {{ Route::is('khieu_nai.*') ? 'active' : '' }}">
-              <i class="bi bi-plus-circle-dotted"></i>
+          <li class="mb-1">
+            <a href="{{ route('khieu_nai.index') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('khieu_nai.*') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+              <i class="bi bi-plus-circle-dotted mr-3 text-lg"></i>
               <span>Bổ sung minh chứng</span>
             </a>
           </li>
@@ -335,7 +172,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="ms-main">
+    <main class="p-6 md:p-8 min-h-[calc(100vh-70px)] transition-all duration-300 ml-0 lg:ml-[260px] mt-[70px]">
       @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="border-radius:12px;">
           <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
@@ -354,7 +191,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="ms-footer">
+    <footer class="bg-slate-900 text-slate-400 text-center py-4 border-t border-slate-800 text-xs ml-0 lg:ml-[260px]">
       <div><strong>ĐIỂM RÈN LUYỆN SV &copy; 2026</strong>. Giải pháp quản lý điểm rèn luyện thông minh, minh bạch, hiệu quả.</div>
     </footer>
 

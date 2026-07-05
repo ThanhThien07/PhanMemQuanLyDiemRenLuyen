@@ -1,4 +1,5 @@
-@import 'tailwindcss';
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -9,3 +10,50 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@utility btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 font-semibold text-white shadow-md transition duration-200 cursor-pointer border-0 bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700;
+}
+
+@utility btn-danger {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 font-semibold text-white shadow-md transition duration-200 cursor-pointer border-0 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800;
+}
+
+@utility btn-register {
+    @apply w-full inline-flex items-center justify-center rounded-xl py-2.5 font-semibold text-white shadow-lg bg-gradient-to-r from-red-800 to-red-950 hover:from-red-700 hover:to-red-900 border-0 transition duration-200 cursor-pointer;
+}
+
+@utility btn-outline-danger {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 font-semibold border border-red-500 text-red-500 hover:bg-red-50 transition duration-200 cursor-pointer bg-transparent;
+}
+
+@utility btn-outline-success {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold border border-green-600 text-green-600 hover:bg-green-50 transition duration-200 cursor-pointer bg-transparent;
+}
+
+@utility btn-success {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold text-white shadow-md transition duration-200 cursor-pointer border-0 bg-green-600 hover:bg-green-700;
+}
+
+@utility form-control-custom {
+    @apply w-full rounded-xl py-2.5 px-4 border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition duration-200;
+}
+
+@utility form-control-custom-dark {
+    @apply w-full bg-white/5 border border-white/15 text-white placeholder-white/30 rounded-xl py-2.5 px-4 focus:bg-white/10 focus:ring-2 focus:ring-rose-400 focus:border-transparent focus:text-white transition duration-200;
+}
+
+@utility form-select-custom-dark {
+    @apply w-full bg-white/5 border border-white/15 text-white rounded-xl py-2.5 px-4 focus:bg-white/10 focus:ring-2 focus:ring-rose-400 focus:border-transparent focus:text-white transition duration-200;
+}
+
+@utility btn-quick-login {
+    @apply bg-slate-50 border border-slate-200 text-slate-600 font-semibold rounded-xl px-3 py-1.5 hover:bg-sky-50 hover:text-sky-700 hover:border-sky-300 transition duration-200 text-xs inline-flex items-center justify-center cursor-pointer;
+}
+
+@utility btn-outline-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold border border-sky-500 text-sky-500 hover:bg-sky-50 transition duration-200 cursor-pointer bg-transparent no-underline;
+}
+
+
+
