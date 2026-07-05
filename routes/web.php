@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/hoat-dong/{id}/huy-dang-ky', [HoatDongController::class, 'cancel'])->name('hoat_dong.cancel')->middleware('role:sinh_vien,ban_can_su');
     Route::get('/hoat-dong/{id}/diem-danh', [HoatDongController::class, 'attendanceList'])->name('hoat_dong.attendance')->middleware('role:admin');
     Route::post('/hoat-dong/diem-danh/{id}', [HoatDongController::class, 'updateAttendance'])->name('hoat_dong.update_attendance')->middleware('role:admin');
+    Route::get('/hoat-dong/{id}/diem-danh-qr', [HoatDongController::class, 'diemDanhQr'])->name('hoat_dong.diem_danh_qr')->middleware('role:sinh_vien,ban_can_su');
+    Route::get('/hoat-dong/check-attendance/{id}', [HoatDongController::class, 'checkAttendance'])->name('hoat_dong.check_attendance');
 
     // Minh chứng
     Route::get('/minh-chung', [MinhChungController::class, 'index'])->name('minh_chung.index');

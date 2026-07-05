@@ -137,7 +137,16 @@
         success: function(response) {
           if (response.success) {
             location.reload();
+          } else {
+            alert(response.message || 'Có lỗi xảy ra khi cập nhật trạng thái.');
           }
+        },
+        error: function(xhr) {
+          let msg = 'Có lỗi xảy ra khi kết nối máy chủ.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            msg = xhr.responseJSON.message;
+          }
+          alert(msg);
         }
       });
     }

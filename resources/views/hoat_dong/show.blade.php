@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+  $now = now();
+  $isOngoing = $now->between($hoatDong->thoi_gian_bat_dau, $hoatDong->thoi_gian_ket_thuc);
+@endphp
 <div class="container-fluid">
   <div class="mb-4">
     <a href="{{ route('hoat_dong.index') }}" class="text-decoration-none text-muted"><i class="bi bi-arrow-left"></i> Quay lại danh sách</a>
@@ -45,6 +49,29 @@
             </div>
           </div>
         </div>
+
+        @if($hoatDong->hinh_thuc_diem_danh === 'qr')
+          <div class="mt-4 pt-4 border-top text-center">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-qr-code me-2 text-primary"></i>Mã QR Điểm danh cố định</h5>
+            
+            <div class="qr-wrapper p-3 bg-white d-inline-block border rounded shadow-sm">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode(route('hoat_dong.diem_danh_qr', $hoatDong->id)) }}" 
+                   class="img-fluid @if(!$isOngoing) qr-blurred @endif" 
+                   id="qr-image"
+                   alt="Mã QR Điểm danh">
+            </div>
+            
+            @if(!$isOngoing)
+              <div class="text-danger mt-2 fw-semibold" id="qr-status-msg">
+                <i class="bi bi-lock-fill me-1"></i> Mã QR đang bị khóa (Chỉ khả dụng từ {{ $hoatDong->thoi_gian_bat_dau->format('H:i d/m/Y') }} đến {{ $hoatDong->thoi_gian_ket_thuc->format('H:i d/m/Y') }})
+              </div>
+            @else
+              <div class="text-success mt-2 fw-semibold animate-pulse" id="qr-status-msg">
+                <i class="bi bi-qr-code-scan me-1"></i> Mã QR đã mở khóa! Quét mã bằng điện thoại để điểm danh ngay.
+              </div>
+            @endif
+          </div>
+        @endif
       </div>
     </div>
 
@@ -85,4 +112,57 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('scripts')
+<style>
+  .qr-blurred {
+    filter: blur(8px);
+    pointer-events: none;
+    user-select: none;
+  }
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  .animate-pulse {
+    animation: pulse 2s infinite ease-in-out;
+  }
+</style>
+
+@auth
+  @if(Auth::user()->role === 'sinh_vien' || Auth::user()->role === 'ban_can_su')
+    <script>
+      $(document).ready(function() {
+        // Poll every 2 seconds to check attendance status
+        let checkInterval = setInterval(function() {
+          $.ajax({
+            url: '{{ route("hoat_dong.check_attendance", $hoatDong->id) }}',
+            type: 'GET',
+            success: function(data) {
+              if (data.success && data.status === 'co_mat') {
+                // Update registration status panel dynamically
+                let panel = $('.col-lg-4 .card-premium');
+                panel.html(`
+                  <h5 class="fw-bold text-dark mb-3"><i class="bi bi-shield-check me-2"></i>Trạng thái đăng ký</h5>
+                  <div class="alert alert-success bg-success bg-opacity-10 text-success border-0 py-3 mb-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>Bạn đã đăng ký hoạt động này.
+                    <hr class="my-2">
+                    <span class="small">Điểm danh: <strong>co_mat</strong></span>
+                  </div>
+                  <form action="{{ route('hoat_dong.cancel', $hoatDong->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger w-100 py-2 fw-bold"><i class="bi bi-x-circle me-1"></i> Hủy đăng ký</button>
+                  </form>
+                `);
+                clearInterval(checkInterval); // Stop polling once checked in
+              }
+            }
+          });
+        }, 2000);
+      });
+    </script>
+  @endif
+@endauth
 @endsection

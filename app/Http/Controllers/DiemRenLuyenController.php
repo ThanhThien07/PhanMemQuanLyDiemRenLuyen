@@ -88,7 +88,7 @@ class DiemRenLuyenController extends Controller
         $reportType = $request->report_type ?? 'all';
 
         $user = Auth::user();
-        $query = DiemRenLuyen::with(['sinhVien.lop.khoa', 'sinhVien.lop.nganh', 'sinhVien.heDaoTao', 'hocKy'])
+        $query = DiemRenLuyen::with(['sinhVien.lop.nganh.khoa', 'sinhVien.lop.nganh', 'sinhVien.heDaoTao', 'hocKy'])
             ->where('hoc_ky_id', $selectedHocKy);
 
         if ($user->role === 'co_van') {
@@ -117,7 +117,7 @@ class DiemRenLuyenController extends Controller
             });
         }
         if ($request->filled('khoa_id')) {
-            $query->whereHas('sinhVien.lop', function($q) use ($request) {
+            $query->whereHas('sinhVien.lop.nganh', function($q) use ($request) {
                 $q->where('khoa_id', $request->khoa_id);
             });
         }
@@ -212,7 +212,7 @@ class DiemRenLuyenController extends Controller
         $reportType = $request->report_type ?? 'all';
 
         $user = Auth::user();
-        $query = DiemRenLuyen::with(['sinhVien.lop.khoa', 'sinhVien.lop.nganh', 'sinhVien.heDaoTao', 'hocKy'])
+        $query = DiemRenLuyen::with(['sinhVien.lop.nganh.khoa', 'sinhVien.lop.nganh', 'sinhVien.heDaoTao', 'hocKy'])
             ->where('hoc_ky_id', $selectedHocKy);
 
         if ($user->role === 'co_van') {

@@ -139,7 +139,7 @@ class XetDuyetController extends Controller
     public function showReviewEvaluation($id)
     {
         $user = Auth::user();
-        $diemRenLuyen = DiemRenLuyen::with(['sinhVien.lop.khoa', 'sinhVien.heDaoTao', 'hocKy'])->findOrFail($id);
+        $diemRenLuyen = DiemRenLuyen::with(['sinhVien.lop.nganh.khoa', 'sinhVien.heDaoTao', 'hocKy'])->findOrFail($id);
         $sinhVien = $diemRenLuyen->sinhVien;
 
         if ($user->role === 'ban_can_su') {
@@ -407,7 +407,7 @@ class XetDuyetController extends Controller
                 if (!$svBCS || $svBCS->lop_id !== $targetLopId) {
                     continue; // Unauthorized skip
                 }
-                if ($currentStatus === 'cho_bcs_duyet') {
+                if ($currentStatus === 'cho_bcs_duyet' || $currentStatus === 'tam_tinh') {
                     $nextStatus = 'cho_cvht_duyet';
                 }
             } elseif ($user->role === 'co_van') {

@@ -162,4 +162,74 @@ class HoatDongController extends Controller
 
         return response()->json(["success" => true]);
     }
+
+    public function diemDanhQr($id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'sinh_vien' && $user->role !== 'ban_can_su') {
+            return redirect()->route('hoat_dong.show', $id)
+                ->with('warning', 'Chỉ sinh viên mới có thể thực hiện quét mã điểm danh.');
+        }
+
+        $sinhVien = SinhVien::where('user_id', $user->id)->first();
+        if (!$sinhVien) {
+            return redirect()->route('hoat_dong.show', $id)
+                ->with('warning', 'Không tìm thấy hồ sơ sinh viên của bạn.');
+        }
+
+        $hoatDong = HoatDong::findOrFail($id);
+        $now = now();
+
+        // Check if the activity is currently ongoing
+        if ($now->lt($hoatDong->thoi_gian_bat_dau) || $now->gt($hoatDong->thoi_gian_ket_thuc)) {
+            return redirect()->route('hoat_dong.show', $id)
+                ->with('warning', 'Mã QR này chỉ khả dụng trong khoảng thời gian diễn ra hoạt động.');
+        }
+
+        // Register automatically if not registered
+        $reg = DangKyHoatDong::firstOrCreate([
+            'sinh_vien_id' => $sinhVien->id,
+            'hoat_dong_id' => $id,
+        ], [
+            'trang_thai_dang_ky' => 'da_dang_ky'
+        ]);
+
+        $diemDanh = DiemDanh::firstOrNew(['dang_ky_hoat_dong_id' => $reg->id]);
+        $diemDanh->trang_thai = 'co_mat';
+        $diemDanh->check_in_time = $now;
+        $diemDanh->save();
+
+        // Recalculate training points
+        $mcController = new MinhChungController();
+        $mcController->recalculatePoints($sinhVien->id);
+
+        return redirect()->route('hoat_dong.show', $id)
+            ->with('success', 'Bạn đã điểm danh thành công!');
+    }
+
+    public function checkAttendance($id)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false, 'status' => 'guest']);
+        }
+
+        $sinhVien = SinhVien::where('user_id', $user->id)->first();
+        if (!$sinhVien) {
+            return response()->json(['success' => false, 'status' => 'no_profile']);
+        }
+
+        $reg = DangKyHoatDong::where('sinh_vien_id', $sinhVien->id)
+            ->where('hoat_dong_id', $id)
+            ->first();
+
+        if (!$reg) {
+            return response()->json(['success' => true, 'status' => 'chua_dang_ky']);
+        }
+
+        $diemDanh = DiemDanh::where('dang_ky_hoat_dong_id', $reg->id)->first();
+        $status = $diemDanh ? $diemDanh->trang_thai : 'vang_mat';
+
+        return response()->json(['success' => true, 'status' => $status]);
+    }
 }
