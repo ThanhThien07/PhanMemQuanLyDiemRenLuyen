@@ -204,39 +204,6 @@
     </div>
   </div>
 
-  <!-- Notifications Section -->
-  <div class="card-premium mb-6 overflow-hidden">
-    <div class="card-premium-header bg-slate-50/50">
-      <h5 class="card-premium-title text-slate-800 flex items-center gap-2">
-        <i class="bi bi-bell-fill text-amber-500"></i> Thông báo mới nhất
-      </h5>
-    </div>
-    <div class="p-5">
-      @if($thongBaos->isEmpty())
-        <div class="text-center py-6 text-slate-400">
-          <i class="bi bi-chat-left-dots text-3xl mb-2 block text-slate-300"></i>
-          Không có thông báo mới nào.
-        </div>
-      @else
-        <div class="flex flex-col gap-4">
-          @foreach($thongBaos as $tb)
-            <div class="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50/80 transition duration-200 border border-slate-100">
-              <div class="flex-shrink-0 bg-amber-50 text-amber-600 p-3 rounded-2xl">
-                <i class="bi bi-bell-fill text-lg"></i>
-              </div>
-              <div class="flex-grow">
-                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1.5 mb-1.5">
-                  <h6 class="font-extrabold text-slate-800 mb-0" style="font-size: 15px;">{{ $tb->tieu_de }}</h6>
-                  <span class="text-xs text-slate-400 font-semibold bg-slate-100 px-2.5 py-1 rounded-lg">{{ $tb->created_at->diffForHumans() }}</span>
-                </div>
-                <p class="mb-0 text-slate-600 text-sm leading-relaxed">{{ $tb->noi_dung }}</p>
-              </div>
-            </div>
-          @endforeach
-        </div>
-      @endif
-    </div>
-  </div>
 </div>
 @endsection
 
