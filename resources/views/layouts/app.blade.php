@@ -164,6 +164,12 @@
                 <span>Cấu hình Học kỳ</span>
               </a>
             </li>
+            <li>
+              <a href="{{ route('backup.index') }}" class="flex items-center px-5 py-3 text-slate-300 hover:text-sky-400 hover:bg-white/5 border-l-4 transition-all duration-200 text-decoration-none {{ Route::is('backup.*') ? 'border-sky-400 bg-sky-500/10 text-sky-400 font-semibold' : 'border-transparent' }}">
+                <i class="bi bi-shield-lock-fill mr-3 text-lg"></i>
+                <span>Sao lưu dữ liệu</span>
+              </a>
+            </li>
           @endif
 
           <li>

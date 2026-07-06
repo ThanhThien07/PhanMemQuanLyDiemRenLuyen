@@ -9,6 +9,7 @@ use App\Http\Controllers\XetDuyetController;
 use App\Http\Controllers\DiemRenLuyenController;
 use App\Http\Controllers\KhieuNaiController;
 use App\Http\Controllers\HocKyController;
+use App\Http\Controllers\BackupController;
 
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -61,6 +62,15 @@ Route::middleware(['auth'])->group(function () {
     // Cấu hình học kỳ
     Route::get('/hoc-ky/settings', [HocKyController::class, 'settings'])->name('hoc_ky.settings')->middleware('role:ctsv');
     Route::post('/hoc-ky/settings', [HocKyController::class, 'updateSettings'])->name('hoc_ky.settings.update')->middleware('role:ctsv');
+
+    // Sao lưu và khôi phục dữ liệu
+    Route::get('/backup', [BackupController::class, 'index'])->name('backup.index')->middleware('role:ctsv');
+    Route::post('/backup/run', [BackupController::class, 'runManual'])->name('backup.run')->middleware('role:ctsv');
+    Route::post('/backup/settings', [BackupController::class, 'updateSettings'])->name('backup.settings.update')->middleware('role:ctsv');
+    Route::get('/backup/download/{file}', [BackupController::class, 'download'])->name('backup.download')->middleware('role:ctsv');
+    Route::delete('/backup/delete/{file}', [BackupController::class, 'delete'])->name('backup.delete')->middleware('role:ctsv');
+    Route::post('/backup/restore/{file}', [BackupController::class, 'restore'])->name('backup.restore')->middleware('role:ctsv');
+    Route::post('/backup/restore-upload', [BackupController::class, 'restoreUpload'])->name('backup.restore_upload')->middleware('role:ctsv');
 
     // Khiếu nại phúc khảo
     Route::get('/khieu-nai', [KhieuNaiController::class, 'index'])->name('khieu_nai.index');
