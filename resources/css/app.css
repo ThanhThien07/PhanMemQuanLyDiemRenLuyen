@@ -255,7 +255,7 @@
     top: 15%;
     bottom: 15%;
     width: 4px;
-    background-color: #38bdf8; /* sky-400 */
+    background-color: #f59e0b; /* amber-500 */
     border-radius: 0 4px 4px 0;
     transform: scaleX(0);
     transform-origin: left;
@@ -264,7 +264,7 @@
 .ms-sidebar a:hover::before {
     transform: scaleX(1);
 }
-.ms-sidebar a.border-sky-400::before {
+.ms-sidebar a.active-sidebar-link::before {
     transform: scaleX(1) !important;
 }
 

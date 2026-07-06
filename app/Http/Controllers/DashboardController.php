@@ -49,12 +49,39 @@ class DashboardController extends Controller
             // Lấy kết quả điểm rèn luyện mới nhất
             $diemRenLuyen = DiemRenLuyen::where("sinh_vien_id", $sinhVien->id)->latest()->first();
 
+            // Tính dữ liệu biểu đồ cho lớp của sinh viên
+            $lopId = $sinhVien->lop_id;
+            $xepLoaiCounts = DiemRenLuyen::where('lop_id', $lopId)
+                ->select('xep_loai', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
+                ->groupBy('xep_loai')
+                ->pluck('count', 'xep_loai')
+                ->toArray();
+
+            $categories = ['Xuất sắc', 'Tốt', 'Khá', 'Trung bình', 'Yếu'];
+            $donutData = [];
+            foreach ($categories as $cat) {
+                $donutData[$cat] = $xepLoaiCounts[$cat] ?? 0;
+            }
+
+            $lineData = [];
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i)->format('Y-m-d');
+                $dayLabel = now()->subDays($i)->format('d/m');
+                $count = \App\Models\DangKyHoatDong::whereDate('created_at', $date)
+                    ->whereHas('sinhVien', function($q) use ($lopId) {
+                        $q->where('lop_id', $lopId);
+                    })->count();
+                $lineData[$dayLabel] = $count;
+            }
+
             return view("dashboard", [
                 "thongBaos" => $thongBaos,
                 "sinhVien" => $sinhVien,
                 "hoatDongDaThamGiaCount" => $hoatDongDaThamGiaCount,
                 "minhChungChoDuyetCount" => $minhChungChoDuyetCount,
-                "diemRenLuyen" => $diemRenLuyen
+                "diemRenLuyen" => $diemRenLuyen,
+                "donutData" => $donutData,
+                "lineData" => $lineData
             ]);
         }
 
@@ -80,6 +107,30 @@ class DashboardController extends Controller
                         $q->whereIn('lop_id', $assignedLopIds);
                     })->count(),
             ];
+
+            // Tính dữ liệu biểu đồ cho các lớp phụ trách
+            $xepLoaiCounts = DiemRenLuyen::whereIn('lop_id', $assignedLopIds)
+                ->select('xep_loai', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
+                ->groupBy('xep_loai')
+                ->pluck('count', 'xep_loai')
+                ->toArray();
+
+            $categories = ['Xuất sắc', 'Tốt', 'Khá', 'Trung bình', 'Yếu'];
+            $donutData = [];
+            foreach ($categories as $cat) {
+                $donutData[$cat] = $xepLoaiCounts[$cat] ?? 0;
+            }
+
+            $lineData = [];
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i)->format('Y-m-d');
+                $dayLabel = now()->subDays($i)->format('d/m');
+                $count = \App\Models\DangKyHoatDong::whereDate('created_at', $date)
+                    ->whereHas('sinhVien', function($q) use ($assignedLopIds) {
+                        $q->whereIn('lop_id', $assignedLopIds);
+                    })->count();
+                $lineData[$dayLabel] = $count;
+            }
         } else {
             // Thống kê toàn cục dành cho quản trị viên (Admin/CTSV)
             $stats = [
@@ -88,11 +139,33 @@ class DashboardController extends Controller
                 "pending_evidences" => HoSoMinhChung::where("trang_thai_duyet", "cho_duyet")->count(),
                 "pending_complaints" => \App\Models\KhieuNai::where("trang_thai_xu_ly", "cho_tiep_nhan")->count(),
             ];
+
+            // Tính dữ liệu biểu đồ toàn trường
+            $xepLoaiCounts = DiemRenLuyen::select('xep_loai', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
+                ->groupBy('xep_loai')
+                ->pluck('count', 'xep_loai')
+                ->toArray();
+
+            $categories = ['Xuất sắc', 'Tốt', 'Khá', 'Trung bình', 'Yếu'];
+            $donutData = [];
+            foreach ($categories as $cat) {
+                $donutData[$cat] = $xepLoaiCounts[$cat] ?? 0;
+            }
+
+            $lineData = [];
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i)->format('Y-m-d');
+                $dayLabel = now()->subDays($i)->format('d/m');
+                $count = \App\Models\DangKyHoatDong::whereDate('created_at', $date)->count();
+                $lineData[$dayLabel] = $count;
+            }
         }
 
         return view("dashboard", [
             "thongBaos" => $thongBaos,
-            "stats" => $stats
+            "stats" => $stats,
+            "donutData" => $donutData,
+            "lineData" => $lineData
         ]);
     }
 }
