@@ -169,6 +169,7 @@
     </div>
   @endif
 
+  @if(in_array(Auth::user()->role, ['ctsv', 'co_van']))
   <!-- Charts Section -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     <!-- Donut Chart Card -->
@@ -203,11 +204,13 @@
       </div>
     </div>
   </div>
+  @endif
 
 </div>
 @endsection
 
 @section('scripts')
+@if(in_array(Auth::user()->role, ['ctsv', 'co_van']))
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -347,4 +350,5 @@
     lineChart.render();
   });
 </script>
+@endif
 @endsection
