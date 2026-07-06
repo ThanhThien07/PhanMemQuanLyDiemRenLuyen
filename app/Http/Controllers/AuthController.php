@@ -75,7 +75,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|string|in:admin,ctsv,sinh_vien,ban_can_su,co_van',
+            'role' => 'required|string|in:ctsv,sinh_vien,ban_can_su,co_van',
         ];
 
         if ($request->role === 'sinh_vien' || $request->role === 'ban_can_su') {
@@ -157,7 +157,7 @@ class AuthController extends Controller
     private function getRoleNameVi($role)
     {
         switch ($role) {
-            case 'admin':
+            case 'ctsv':
                 return 'Phòng Công tác sinh viên (CTSV)';
             case 'sinh_vien':
                 return 'Sinh viên';

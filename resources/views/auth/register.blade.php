@@ -57,7 +57,6 @@
           <option value="ban_can_su" style="background: #111; color: #fff;">Ban cán sự lớp</option>
           <option value="co_van" style="background: #111; color: #fff;">Cố vấn học tập</option>
           <option value="ctsv" style="background: #111; color: #fff;">Phòng Công tác sinh viên (CTSV)</option>
-          <option value="admin" style="background: #111; color: #fff;">Quản trị viên</option>
         </select>
       </div>
 

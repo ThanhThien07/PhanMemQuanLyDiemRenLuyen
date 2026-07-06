@@ -110,7 +110,7 @@
             <div class="alert alert-info bg-info bg-opacity-10 text-info border-0 py-3 mb-4 rounded-xl">
               Vai trò của bạn là <strong>{{ Auth::user()->role }}</strong>. Chỉ sinh viên mới có thể đăng ký tham gia.
             </div>
-            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'don_vi_to_chuc')
+            @if(Auth::user()->role === 'ctsv' || Auth::user()->role === 'don_vi_to_chuc')
               <a href="{{ route('hoat_dong.attendance', $hoatDong->id) }}" class="btn-primary w-full text-decoration-none"><i class="bi bi-qr-code-scan mr-1"></i> Điểm danh sinh viên</a>
             @endif
           @endif

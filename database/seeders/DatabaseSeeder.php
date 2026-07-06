@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Seed Roles
         $roles = [
-            ['name' => 'admin', 'display_name' => 'Quản trị viên hệ thống'],
             ['name' => 'ctsv', 'display_name' => 'Phòng Công tác sinh viên (CTSV)'],
             ['name' => 'sinh_vien', 'display_name' => 'Sinh viên'],
             ['name' => 'ban_can_su', 'display_name' => 'Ban cán sự lớp'],
@@ -48,12 +47,6 @@ class DatabaseSeeder extends Seeder
 
         // 2. Create Users
         $usersData = [
-            [
-                'name' => 'Quản trị viên',
-                'email' => 'admin@sv.com',
-                'password' => Hash::make('password'),
-                'role' => 'admin'
-            ],
             [
                 'name' => 'Phòng Công tác sinh viên (CTSV)',
                 'email' => 'ctsv@sv.com',

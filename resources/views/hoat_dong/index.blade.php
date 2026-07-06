@@ -21,7 +21,7 @@
       <h2 class="font-bold text-slate-800 text-2xl mb-1"><i class="bi bi-calendar-event mr-2 text-sky-500"></i>Hoạt Động Rèn Luyện</h2>
       <p class="text-slate-500 mb-0">Đăng ký tham gia các hoạt động để ghi nhận điểm rèn luyện.</p>
     </div>
-    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'don_vi_to_chuc')
+    @if(Auth::user()->role === 'ctsv' || Auth::user()->role === 'don_vi_to_chuc')
       <a href="{{ route('hoat_dong.create') }}" class="btn-primary flex items-center gap-2 text-decoration-none">
         <i class="bi bi-plus-circle"></i> Tạo hoạt động mới
       </a>

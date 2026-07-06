@@ -123,8 +123,8 @@ class XetDuyetController extends Controller
                 return response()->json(["success" => false, "message" => "Hành động duyệt không hợp lệ cho Cố vấn."], 400);
             }
         } 
-        // 3. Kiểm tra quyền hạn của Admin (Phòng CTSV)
-        elseif (in_array($user->role, ['admin', 'ctsv'])) {
+        // 3. Kiểm tra quyền hạn của Phòng CTSV
+        elseif ($user->role === 'ctsv') {
             if ($targetState === 'da_khoa') {
                 if ($oldState !== 'cho_ctsv_duyet') {
                     return response()->json(["success" => false, "message" => "Chỉ có thể khóa khi trạng thái là Chờ CTSV phê duyệt."], 400);
@@ -278,8 +278,8 @@ class XetDuyetController extends Controller
         }
 
         // Chặn chỉnh sửa nếu phiếu điểm đã được CTSV khóa
-        if ($diemRenLuyen->trang_thai_duyet === 'da_khoa' && !in_array($user->role, ['admin', 'ctsv'])) {
-            return redirect()->route('xet_duyet.index')->with('warning', 'Phiếu điểm này đã khóa và chỉ Admin/CTSV mới có quyền điều chỉnh.');
+        if ($diemRenLuyen->trang_thai_duyet === 'da_khoa' && $user->role !== 'ctsv') {
+            return redirect()->route('xet_duyet.index')->with('warning', 'Phiếu điểm này đã khóa và chỉ CTSV mới có quyền điều chỉnh.');
         }
 
         $criteria = EvaluationCriteria::getCriteria();
@@ -488,8 +488,8 @@ class XetDuyetController extends Controller
                         $nextStatus = 'cho_ctsv_duyet';
                     }
                 } 
-                // 3. Phân quyền và cập nhật đối với Admin (Phòng CTSV)
-                elseif (in_array($user->role, ['admin', 'ctsv'])) {
+                // 3. Phân quyền và cập nhật đối với Phòng CTSV
+                elseif ($user->role === 'ctsv') {
                     if ($currentStatus === 'cho_ctsv_duyet') {
                         $nextStatus = 'da_khoa';
                     } elseif ($currentStatus === 'cho_cvht_duyet') {

@@ -20,8 +20,8 @@ class CheckRole
 
         $user = Auth::user();
         
-        // Admin and CTSV have full access to everything
-        if ($user->role === 'admin' || $user->role === 'ctsv') {
+        // CTSV has full access to everything
+        if ($user->role === 'ctsv') {
             return $next($request);
         }
 
