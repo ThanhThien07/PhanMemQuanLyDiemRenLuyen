@@ -166,13 +166,13 @@ Thực hiện các bước sau để cài đặt dự án chạy dưới localho
 ### 1. Yêu cầu môi trường
 - PHP >= 8.2
 - Composer (Bộ quản lý thư viện PHP)
-- Node.js & NPM (Bộ xây dựng giao diện frontend)
+- Node.js & PNPM (Bộ xây dựng giao diện frontend)
 
 ### 2. Cài đặt chi tiết các bước
 1. **Tải mã nguồn và cài đặt dependencies**:
    ```bash
    composer install
-   npm install
+   pnpm install
    ```
 
 2. **Cấu hình biến môi trường**:

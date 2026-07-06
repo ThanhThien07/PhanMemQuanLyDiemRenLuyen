@@ -377,11 +377,11 @@ class XetDuyetController extends Controller
     public function showPhanCong()
     {
         $user = Auth::user();
-        if ($user->role !== 'admin') {
+        if ($user->role !== 'ctsv') {
             abort(403);
         }
 
-        $advisors = \App\Models\User::whereIn('role', ['co_van', 'admin'])->get();
+        $advisors = \App\Models\User::whereIn('role', ['co_van', 'ctsv'])->get();
         $classes = \App\Models\Lop::with('nganh.khoa')->get();
         $semesters = \App\Models\HocKy::orderBy('id', 'desc')->get();
         $assignments = \App\Models\PhanCongCoVan::with(['user', 'lop', 'hocKy'])->get();
@@ -395,7 +395,7 @@ class XetDuyetController extends Controller
     public function savePhanCong(Request $request)
     {
         $user = Auth::user();
-        if ($user->role !== 'admin') {
+        if ($user->role !== 'ctsv') {
             abort(403);
         }
 
@@ -431,7 +431,7 @@ class XetDuyetController extends Controller
     public function deletePhanCong($id)
     {
         $user = Auth::user();
-        if ($user->role !== 'admin') {
+        if ($user->role !== 'ctsv') {
             abort(403);
         }
 
@@ -526,7 +526,7 @@ class XetDuyetController extends Controller
     public function unlockEvaluation($id)
     {
         $user = Auth::user();
-        if ($user->role !== 'admin') {
+        if ($user->role !== 'ctsv') {
             abort(403);
         }
 
