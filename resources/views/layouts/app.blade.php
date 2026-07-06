@@ -67,10 +67,49 @@
         </div>
         <div class="flex items-center gap-3">
           @auth
-            <a href="/" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition duration-200 text-decoration-none shadow-sm">
-              <i class="bi bi-globe"></i>
-              <span>Xem Trang Chủ</span>
-            </a>
+            @php
+              $layoutThongBaos = \App\Models\ThongBao::latest()->take(5)->get();
+              $unreadCount = $layoutThongBaos->count();
+            @endphp
+            <div class="dropdown me-2">
+              <button class="relative inline-flex items-center justify-center p-2 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-800 bg-white hover:bg-slate-50 transition duration-200 shadow-sm" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: 38px; height: 38px;">
+                <i class="bi bi-bell text-lg"></i>
+                @if($unreadCount > 0)
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-full bg-rose-500 text-[10px] px-1 py-0.5 text-white flex items-center justify-center shadow-sm" style="font-size: 9px; min-width: 18px; height: 18px; transform: translate(-30%, -30%) !important;">
+                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                  </span>
+                @endif
+              </button>
+              <div class="dropdown-menu dropdown-menu-end p-0 border-0 shadow-lg mt-2 overflow-hidden" aria-labelledby="notificationDropdown" style="width: 360px; max-height: 480px; overflow-y: auto; border-radius: 1rem !important;">
+                <div class="px-4 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                  <span class="font-bold text-slate-800" style="font-size: 14px;">Thông báo mới nhất</span>
+                  <span class="badge bg-danger rounded-full px-2 py-0.5 text-[10px]">{{ $unreadCount }} mới</span>
+                </div>
+                <div class="divide-y divide-slate-100">
+                  @if($layoutThongBaos->isEmpty())
+                    <div class="px-4 py-6 text-center text-slate-400">
+                      <i class="bi bi-bell-slash text-2xl mb-1 block"></i>
+                      <span class="text-xs">Không có thông báo nào</span>
+                    </div>
+                  @else
+                    @foreach($layoutThongBaos as $tb)
+                      <div class="px-4 py-3 hover:bg-slate-50/60 transition duration-150 cursor-pointer">
+                        <div class="flex items-start gap-3">
+                          <div class="bg-amber-50 text-amber-600 p-2.5 rounded-xl mt-0.5">
+                            <i class="bi bi-bell-fill text-sm"></i>
+                          </div>
+                          <div class="flex-grow">
+                            <h6 class="font-extrabold text-slate-800 mb-1" style="font-size: 13px; line-height: 1.4;">{{ $tb->tieu_de }}</h6>
+                            <p class="text-slate-500 text-xs mb-1 line-clamp-2" style="line-height: 1.5;">{{ $tb->noi_dung }}</p>
+                            <span class="text-[10px] text-slate-400 font-semibold">{{ $tb->created_at->diffForHumans() }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    @endforeach
+                  @endif
+                </div>
+              </div>
+            </div>
             <div class="dropdown">
               <a href="#" class="flex items-center gap-2.5 text-decoration-none dropdown-toggle px-3 py-2 rounded-xl border border-slate-100 hover:bg-slate-50 transition duration-200" id="userMenu" data-bs-toggle="dropdown">
                 <div class="rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 text-white w-8 h-8 flex items-center justify-center font-bold shadow-sm">
