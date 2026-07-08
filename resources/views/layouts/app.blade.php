@@ -153,13 +153,13 @@
         <div class="flex flex-col gap-4">
           <!-- SECTION 1: KHU VỰC QUẢN LÝ -->
           <div>
-            <div class="px-5 pt-3 pb-2 text-uppercase text-amber-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
-              <i class="bi bi-sliders text-amber-500" style="font-size: 12px;"></i>
+            <div class="px-5 pt-3 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
+              <i class="bi bi-sliders text-sky-500" style="font-size: 12px;"></i>
               <span>KHU VỰC QUẢN LÝ</span>
             </div>
             <ul class="flex flex-col mb-0 p-0 list-none gap-1">
               <li>
-                <a href="{{ route('dashboard') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('dashboard') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                <a href="{{ route('dashboard') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('dashboard') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                   <i class="bi bi-speedometer2 mr-3 text-lg"></i>
                   <span>Bảng điều khiển</span>
                 </a>
@@ -167,7 +167,7 @@
               
               @if(in_array(Auth::user()->role, ['ctsv', 'co_van']))
                 <li>
-                  <a href="{{ route('diem_ren_luyen.report') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.report') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                  <a href="{{ route('diem_ren_luyen.report') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.report') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                     <i class="bi bi-file-earmark-bar-graph mr-3 text-lg"></i>
                     <span>Báo cáo & Thống kê</span>
                   </a>
@@ -176,7 +176,7 @@
 
               @if(Auth::user()->role === 'ctsv')
                 <li>
-                  <a href="{{ route('backup.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('backup.*') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                  <a href="{{ route('backup.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('backup.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                     <i class="bi bi-shield-lock-fill mr-3 text-lg"></i>
                     <span>Sao lưu dữ liệu</span>
                   </a>
@@ -187,20 +187,20 @@
 
           <!-- SECTION 2: DANH MỤC HỆ THỐNG -->
           <div>
-            <div class="px-5 pt-2 pb-2 text-uppercase text-amber-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
-              <i class="bi bi-folder-fill text-amber-500" style="font-size: 12px;"></i>
+            <div class="px-5 pt-2 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
+              <i class="bi bi-folder-fill text-sky-500" style="font-size: 12px;"></i>
               <span>DANH MỤC HỆ THỐNG</span>
             </div>
             <ul class="flex flex-col mb-0 p-0 list-none gap-1">
               <li>
-                <a href="{{ route('hoat_dong.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoat_dong.*') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                <a href="{{ route('hoat_dong.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoat_dong.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                   <i class="bi bi-calendar-event mr-3 text-lg"></i>
                   <span>Hoạt động rèn luyện</span>
                 </a>
               </li>
 
               <li>
-                <a href="{{ route('diem_ren_luyen.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.index') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                <a href="{{ route('diem_ren_luyen.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.index') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                   <i class="bi bi-journal-text mr-3 text-lg"></i>
                   <span>Bảng điểm rèn luyện</span>
                 </a>
@@ -210,13 +210,13 @@
 
           <!-- SECTION 3: KÍP PHỤC VỤ -->
           <div>
-            <div class="px-5 pt-2 pb-2 text-uppercase text-amber-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
-              <i class="bi bi-people-fill text-amber-500" style="font-size: 12px;"></i>
+            <div class="px-5 pt-2 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
+              <i class="bi bi-people-fill text-sky-500" style="font-size: 12px;"></i>
               <span>KÍP PHỤC VỤ</span>
             </div>
             <ul class="flex flex-col mb-3 p-0 list-none gap-1">
               <li>
-                <a href="{{ route('minh_chung.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('minh_chung.*') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                <a href="{{ route('minh_chung.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('minh_chung.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                   <i class="bi bi-file-earmark-check mr-3 text-lg"></i>
                   <span>Nộp / Duyệt minh chứng</span>
                 </a>
@@ -224,7 +224,7 @@
 
               @if(in_array(Auth::user()->role, ['ctsv', 'co_van', 'ban_can_su']))
                 <li>
-                  <a href="{{ route('xet_duyet.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('xet_duyet.*') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                  <a href="{{ route('xet_duyet.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('xet_duyet.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                     <i class="bi bi-clipboard-check mr-3 text-lg"></i>
                     <span>Xét duyệt điểm lớp</span>
                   </a>
@@ -232,7 +232,7 @@
               @endif
 
               <li>
-                <a href="{{ route('khieu_nai.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('khieu_nai.*') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                <a href="{{ route('khieu_nai.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('khieu_nai.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                   <i class="bi bi-plus-circle-dotted mr-3 text-lg"></i>
                   <span>Bổ sung minh chứng</span>
                 </a>
@@ -240,7 +240,7 @@
 
               @if(Auth::user()->role === 'ctsv')
                 <li>
-                  <a href="{{ route('hoc_ky.settings') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoc_ky.settings') ? 'active-sidebar-link bg-amber-500/10 text-amber-400 font-semibold' : '' }}">
+                  <a href="{{ route('hoc_ky.settings') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoc_ky.settings') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
                     <i class="bi bi-gear mr-3 text-lg"></i>
                     <span>Cấu hình Học kỳ</span>
                   </a>
