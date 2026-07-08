@@ -120,11 +120,7 @@
         <div class="flex flex-col gap-4">
           <!-- SECTION 1: KHU VỰC QUẢN LÝ (Management Area) -->
           <div>
-            <!-- Section Header: General Management Tools -->
-            <div class="px-5 pt-3 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
-              <i class="bi bi-sliders text-sky-500" style="font-size: 12px;"></i>
-              <span>KHU VỰC QUẢN LÝ</span>
-            </div>
+
             <ul class="flex flex-col mb-0 p-0 list-none gap-1">
               <li>
                 <!-- Feature: General dashboard with stats widgets based on roles -->
@@ -158,11 +154,7 @@
 
           <!-- SECTION 2: DANH MỤC HỆ THỐNG (System Directories) -->
           <div>
-            <!-- Section Header: Core training score and activities features -->
-            <div class="px-5 pt-2 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
-              <i class="bi bi-folder-fill text-sky-500" style="font-size: 12px;"></i>
-              <span>DANH MỤC HỆ THỐNG</span>
-            </div>
+
             <ul class="flex flex-col mb-0 p-0 list-none gap-1">
               <li>
                 <!-- Feature: Browse activities, register participation, and QR check-in -->
@@ -184,11 +176,7 @@
 
           <!-- SECTION 3: KÍP PHỤC VỤ (Operations/Services) -->
           <div>
-            <!-- Section Header: Evidence, Evaluation, and Appeals -->
-            <div class="px-5 pt-2 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
-              <i class="bi bi-people-fill text-sky-500" style="font-size: 12px;"></i>
-              <span>KÍP PHỤC VỤ</span>
-            </div>
+
             <ul class="flex flex-col mb-3 p-0 list-none gap-1">
               <li>
                 <!-- Feature: Upload Google Drive evidence links or review pending student evidences -->
