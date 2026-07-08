@@ -414,10 +414,6 @@
   });
 </script>
 <style>
-  .bg-light-primary {
-    background-color: rgba(142, 25, 42, 0.05);
-  }
-
   /* Printable style rules */
   @media screen {
     .print-only {

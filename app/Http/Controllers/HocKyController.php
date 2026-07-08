@@ -62,9 +62,11 @@ class HocKyController extends Controller
 
         // Nếu tỷ lệ cấu hình thay đổi, tính toán lại toàn bộ điểm rèn luyện của học kỳ này
         if ($hk->wasChanged('ti_le_ren_luyen') || $hk->wasChanged('ti_le_hoc_tap')) {
-            $transcripts = DiemRenLuyen::where('hoc_ky_id', $hk->id)->get();
+            $transcripts = DiemRenLuyen::with('sinhVien')->where('hoc_ky_id', $hk->id)->get();
             foreach ($transcripts as $t) {
-                DiemRenLuyenService::recalculatePoints($t->sinh_vien_id, $hk->id);
+                if ($t->sinhVien) {
+                    DiemRenLuyenService::recalculatePoints($t->sinhVien, $hk->id);
+                }
             }
         }
 

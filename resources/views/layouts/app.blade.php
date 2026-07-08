@@ -15,41 +15,8 @@
 
     <!-- Vite compiled Tailwind CSS and JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Custom Style Overrides -->
-    <style>
-      :root {
-        --font-outfit: 'Outfit', sans-serif;
-      }
-
-      body {
-        font-family: var(--font-outfit);
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        color: #0f172a;
-        overflow-x: hidden;
-        min-height: 100vh;
-      }
-
-      #userMenu {
-        background: transparent;
-      }
-
-      #userMenu:hover, #userMenu[aria-expanded="true"] {
-        background-color: #f8fafc !important;
-        color: #0f172a !important;
-      }
-
-      @media (max-width: 991.98px) {
-        .ms-sidebar {
-          margin-left: -260px !important;
-        }
-        .ms-sidebar.active {
-          margin-left: 0 !important;
-        }
-      }
-    </style>
   </head>
-  <body>
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 text-slate-900 overflow-x-hidden font-sans">
     <!-- Top Header -->
     <header class="fixed top-0 left-0 right-0 h-[70px] z-[1030] bg-white/80 border-b border-slate-100 flex items-center justify-between px-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05)] backdrop-blur-md transition-all duration-300">
         <div class="flex items-center">
@@ -57,10 +24,10 @@
             <i class="bi bi-list text-lg"></i>
           </button>
           <div class="font-bold text-lg tracking-wider flex items-center">
-            <div class="bg-gradient-to-r from-sky-500 to-indigo-600 p-2 rounded-xl text-white mr-3 flex items-center justify-center shadow-sm" style="width: 38px; height: 38px;">
+            <div class="bg-gradient-to-r from-sky-500 to-indigo-600 p-2 rounded-xl text-white mr-3 flex items-center justify-center shadow-sm w-[38px] h-[38px]">
               <i class="bi bi-mortarboard-fill text-lg"></i>
             </div>
-            <span class="bg-gradient-to-r from-slate-800 to-slate-950 bg-clip-text text-transparent font-extrabold uppercase tracking-wide" style="font-size: 14px; letter-spacing: 0.05em;">
+            <span class="bg-gradient-to-r from-slate-800 to-slate-950 bg-clip-text text-transparent font-extrabold uppercase tracking-wide text-sm">
               ĐIỂM RÈN LUYỆN <span class="from-sky-500 to-indigo-600 bg-gradient-to-r bg-clip-text text-transparent">SV</span>
             </span>
           </div>
@@ -72,17 +39,17 @@
               $unreadCount = $layoutThongBaos->count();
             @endphp
             <div class="dropdown me-2">
-              <button class="relative inline-flex items-center justify-center p-2 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-800 bg-white hover:bg-slate-50 transition duration-200 shadow-sm" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: 38px; height: 38px;">
+              <button class="relative inline-flex items-center justify-center p-2 rounded-xl border border-slate-200 text-slate-600 hover:text-slate-800 bg-white hover:bg-slate-50 transition duration-200 shadow-sm w-[38px] h-[38px]" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-bell text-lg"></i>
                 @if($unreadCount > 0)
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-full bg-rose-500 text-[10px] px-1 py-0.5 text-white flex items-center justify-center shadow-sm" style="font-size: 9px; min-width: 18px; height: 18px; transform: translate(-30%, -30%) !important;">
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-full bg-rose-500 text-[9px] min-w-[18px] h-[18px] text-white flex items-center justify-center shadow-sm -translate-x-[30%] -translate-y-[30%]">
                     {{ $unreadCount > 9 ? '9+' : $unreadCount }}
                   </span>
                 @endif
               </button>
-              <div class="dropdown-menu dropdown-menu-end p-0 border-0 shadow-lg mt-2 overflow-hidden" aria-labelledby="notificationDropdown" style="width: 360px; max-height: 480px; overflow-y: auto; border-radius: 1rem !important;">
+              <div class="dropdown-menu dropdown-menu-end p-0 border-0 shadow-lg mt-2 overflow-hidden w-[360px] max-h-[480px] overflow-y-auto rounded-2xl" aria-labelledby="notificationDropdown">
                 <div class="px-4 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                  <span class="font-bold text-slate-800" style="font-size: 14px;">Thông báo mới nhất</span>
+                  <span class="font-bold text-slate-800 text-sm">Thông báo mới nhất</span>
                   <span class="badge bg-danger rounded-full px-2 py-0.5 text-[10px]">{{ $unreadCount }} mới</span>
                 </div>
                 <div class="divide-y divide-slate-100">
@@ -99,8 +66,8 @@
                             <i class="bi bi-bell-fill text-sm"></i>
                           </div>
                           <div class="flex-grow">
-                            <h6 class="font-extrabold text-slate-800 mb-1" style="font-size: 13px; line-height: 1.4;">{{ $tb->tieu_de }}</h6>
-                            <p class="text-slate-500 text-xs mb-1 line-clamp-2" style="line-height: 1.5;">{{ $tb->noi_dung }}</p>
+                            <h6 class="font-extrabold text-slate-800 mb-1 text-[13px] leading-snug">{{ $tb->tieu_de }}</h6>
+                            <p class="text-slate-500 text-xs mb-1 line-clamp-2 leading-normal">{{ $tb->noi_dung }}</p>
                             <span class="text-[10px] text-slate-400 font-semibold">{{ $tb->created_at->diffForHumans() }}</span>
                           </div>
                         </div>
@@ -115,9 +82,9 @@
                 <div class="rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 text-white w-8 h-8 flex items-center justify-center font-bold shadow-sm">
                   {{ substr(Auth::user()->name, 0, 1) }}
                 </div>
-                <span class="hidden md:inline text-slate-700 font-semibold" style="font-size: 14px;">
+                <span class="hidden md:inline text-slate-700 font-semibold text-sm">
                   {{ Auth::user()->name }} 
-                  <span class="badge bg-secondary ml-1" style="font-size:10px;">
+                  <span class="badge bg-secondary ml-1 text-[10px]">
                     @if(Auth::user()->role === 'ctsv') Phòng CTSV
                     @elseif(Auth::user()->role === 'sinh_vien') Sinh viên
                     @elseif(Auth::user()->role === 'ban_can_su') BCS Lớp
@@ -148,18 +115,20 @@
     </header>
 
     <!-- Navigation Sidebar -->
-    <aside class="fixed top-[70px] bottom-0 left-0 w-[260px] z-[1020] bg-[#161514] border-r border-[#262422] pt-3 transition-all duration-300 overflow-y-auto ms-sidebar">
+    <aside class="fixed top-[70px] bottom-0 left-0 w-[260px] z-[1020] bg-[#161514] border-r border-[#262422] pt-3 transition-all duration-300 overflow-y-auto ms-sidebar -ml-[260px] lg:ml-0 [&.active]:ml-0">
       @auth
         <div class="flex flex-col gap-4">
-          <!-- SECTION 1: KHU VỰC QUẢN LÝ -->
+          <!-- SECTION 1: KHU VỰC QUẢN LÝ (Management Area) -->
           <div>
+            <!-- Section Header: General Management Tools -->
             <div class="px-5 pt-3 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
               <i class="bi bi-sliders text-sky-500" style="font-size: 12px;"></i>
               <span>KHU VỰC QUẢN LÝ</span>
             </div>
             <ul class="flex flex-col mb-0 p-0 list-none gap-1">
               <li>
-                <a href="{{ route('dashboard') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('dashboard') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                <!-- Feature: General dashboard with stats widgets based on roles -->
+                <a href="{{ route('dashboard') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('dashboard') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                   <i class="bi bi-speedometer2 mr-3 text-lg"></i>
                   <span>Bảng điều khiển</span>
                 </a>
@@ -167,7 +136,8 @@
               
               @if(in_array(Auth::user()->role, ['ctsv', 'co_van']))
                 <li>
-                  <a href="{{ route('diem_ren_luyen.report') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.report') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                  <!-- Feature: Report & statistics generation/export (CTSV and Academic Advisors only) -->
+                  <a href="{{ route('diem_ren_luyen.report') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.report') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                     <i class="bi bi-file-earmark-bar-graph mr-3 text-lg"></i>
                     <span>Báo cáo & Thống kê</span>
                   </a>
@@ -176,7 +146,8 @@
 
               @if(Auth::user()->role === 'ctsv')
                 <li>
-                  <a href="{{ route('backup.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('backup.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                  <!-- Feature: SQL database backup, restoration, and auto-backup settings (CTSV only) -->
+                  <a href="{{ route('backup.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('backup.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                     <i class="bi bi-shield-lock-fill mr-3 text-lg"></i>
                     <span>Sao lưu dữ liệu</span>
                   </a>
@@ -185,22 +156,25 @@
             </ul>
           </div>
 
-          <!-- SECTION 2: DANH MỤC HỆ THỐNG -->
+          <!-- SECTION 2: DANH MỤC HỆ THỐNG (System Directories) -->
           <div>
+            <!-- Section Header: Core training score and activities features -->
             <div class="px-5 pt-2 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
               <i class="bi bi-folder-fill text-sky-500" style="font-size: 12px;"></i>
               <span>DANH MỤC HỆ THỐNG</span>
             </div>
             <ul class="flex flex-col mb-0 p-0 list-none gap-1">
               <li>
-                <a href="{{ route('hoat_dong.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoat_dong.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                <!-- Feature: Browse activities, register participation, and QR check-in -->
+                <a href="{{ route('hoat_dong.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoat_dong.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                   <i class="bi bi-calendar-event mr-3 text-lg"></i>
                   <span>Hoạt động rèn luyện</span>
                 </a>
               </li>
 
               <li>
-                <a href="{{ route('diem_ren_luyen.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.index') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                <!-- Feature: View training score logs and submit self-evaluation sheet (Students only) -->
+                <a href="{{ route('diem_ren_luyen.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('diem_ren_luyen.index') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                   <i class="bi bi-journal-text mr-3 text-lg"></i>
                   <span>Bảng điểm rèn luyện</span>
                 </a>
@@ -208,15 +182,17 @@
             </ul>
           </div>
 
-          <!-- SECTION 3: KÍP PHỤC VỤ -->
+          <!-- SECTION 3: KÍP PHỤC VỤ (Operations/Services) -->
           <div>
+            <!-- Section Header: Evidence, Evaluation, and Appeals -->
             <div class="px-5 pt-2 pb-2 text-uppercase text-sky-500 font-bold tracking-widest flex items-center gap-2" style="font-size: 10px; letter-spacing: 0.1em;">
               <i class="bi bi-people-fill text-sky-500" style="font-size: 12px;"></i>
               <span>KÍP PHỤC VỤ</span>
             </div>
             <ul class="flex flex-col mb-3 p-0 list-none gap-1">
               <li>
-                <a href="{{ route('minh_chung.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('minh_chung.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                <!-- Feature: Upload Google Drive evidence links or review pending student evidences -->
+                <a href="{{ route('minh_chung.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('minh_chung.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                   <i class="bi bi-file-earmark-check mr-3 text-lg"></i>
                   <span>Nộp / Duyệt minh chứng</span>
                 </a>
@@ -224,7 +200,8 @@
 
               @if(in_array(Auth::user()->role, ['ctsv', 'co_van', 'ban_can_su']))
                 <li>
-                  <a href="{{ route('xet_duyet.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('xet_duyet.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                  <!-- Feature: Grade student self-evaluations (BCS, Advisors, and CTSV) -->
+                  <a href="{{ route('xet_duyet.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('xet_duyet.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                     <i class="bi bi-clipboard-check mr-3 text-lg"></i>
                     <span>Xét duyệt điểm lớp</span>
                   </a>
@@ -232,7 +209,8 @@
               @endif
 
               <li>
-                <a href="{{ route('khieu_nai.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('khieu_nai.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                <!-- Feature: Student appeals for additional evidence submission and score review -->
+                <a href="{{ route('khieu_nai.index') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('khieu_nai.*') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                   <i class="bi bi-plus-circle-dotted mr-3 text-lg"></i>
                   <span>Bổ sung minh chứng</span>
                 </a>
@@ -240,7 +218,8 @@
 
               @if(Auth::user()->role === 'ctsv')
                 <li>
-                  <a href="{{ route('hoc_ky.settings') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl text-slate-300 hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoc_ky.settings') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : '' }}">
+                  <!-- Feature: Configure academic semesters, timelines for opening/closing evaluation portals -->
+                  <a href="{{ route('hoc_ky.settings') }}" class="flex items-center mx-3 px-4 py-2.5 rounded-xl hover:text-sky-400 hover:bg-white/5 transition-all duration-200 text-decoration-none {{ Route::is('hoc_ky.settings') ? 'active-sidebar-link bg-sky-500/10 text-sky-400 font-semibold' : 'text-slate-300' }}">
                     <i class="bi bi-gear mr-3 text-lg"></i>
                     <span>Cấu hình Học kỳ</span>
                   </a>

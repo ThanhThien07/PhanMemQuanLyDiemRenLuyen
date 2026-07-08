@@ -454,18 +454,35 @@ class XetDuyetController extends Controller
             return redirect()->back()->with('warning', 'Không có sinh viên nào được chọn.');
         }
 
-        $records = DiemRenLuyen::whereIn('id', $ids)->get();
+        // Tải trước quan hệ sinhVien để tránh N+1 queries trong vòng lặp
+        $records = DiemRenLuyen::with('sinhVien')->whereIn('id', $ids)->get();
         $updatedCount = 0;
 
+        // Truy vấn trước thông tin Ban cán sự ngoài vòng lặp
+        $svBCS = null;
+        if ($user->role === 'ban_can_su') {
+            $svBCS = SinhVien::where("user_id", $user->id)->first();
+        }
+
+        // Tải trước toàn bộ phân công của Cố vấn ngoài vòng lặp
+        $assignedLops = [];
+        if ($user->role === 'co_van') {
+            $assignedLops = \App\Models\PhanCongCoVan::where('user_id', $user->id)
+                ->get()
+                ->mapWithKeys(function($item) {
+                    return [$item->lop_id . '-' . $item->hoc_ky_id => true];
+                })
+                ->toArray();
+        }
+
         // Thực hiện cập nhật danh sách an toàn trong Database Transaction
-        DB::transaction(function () use ($user, $records, &$updatedCount) {
+        DB::transaction(function () use ($user, $records, $svBCS, $assignedLops, &$updatedCount) {
             foreach ($records as $record) {
                 $currentStatus = $record->trang_thai_duyet;
                 $nextStatus = null;
 
                 // 1. Phân quyền và cập nhật đối với Ban cán sự lớp
                 if ($user->role === 'ban_can_su') {
-                    $svBCS = SinhVien::where("user_id", $user->id)->first();
                     $targetLopId = $record->lop_id ?: ($record->sinhVien ? $record->sinhVien->lop_id : null);
                     if (!$svBCS || $svBCS->lop_id !== $targetLopId) {
                         continue;
@@ -477,11 +494,8 @@ class XetDuyetController extends Controller
                 // 2. Phân quyền và cập nhật đối với Cố vấn học tập
                 elseif ($user->role === 'co_van') {
                     $targetLopId = $record->lop_id ?: ($record->sinhVien ? $record->sinhVien->lop_id : null);
-                    $isAssigned = \App\Models\PhanCongCoVan::where('user_id', $user->id)
-                        ->where('lop_id', $targetLopId)
-                        ->where('hoc_ky_id', $record->hoc_ky_id)
-                        ->exists();
-                    if (!$isAssigned) {
+                    $key = $targetLopId . '-' . $record->hoc_ky_id;
+                    if (!isset($assignedLops[$key])) {
                         continue;
                     }
                     if ($currentStatus === 'cho_cvht_duyet') {

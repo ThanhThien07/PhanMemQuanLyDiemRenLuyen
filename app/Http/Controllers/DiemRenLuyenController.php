@@ -177,17 +177,39 @@ class DiemRenLuyenController extends Controller
         $classStages = [];
         if ($reportType === 'stage_summary') {
             $classes = Lop::with('coVan')->get();
+            
+            // Tải trước sinh viên và điểm rèn luyện theo nhóm ngoài vòng lặp (Khử N+1 queries)
+            $studentsGrouped = SinhVien::select('id', 'lop_id')->get()->groupBy('lop_id');
+            $transcriptsGrouped = DiemRenLuyen::where('hoc_ky_id', $selectedHocKy)
+                ->get()
+                ->groupBy('sinh_vien_id');
+            
             foreach ($classes as $cl) {
-                $students = SinhVien::where('lop_id', $cl->id)->pluck('id');
-                $transcripts = DiemRenLuyen::whereIn('sinh_vien_id', $students)
-                    ->where('hoc_ky_id', $selectedHocKy)
-                    ->get();
+                $classStudents = $studentsGrouped->get($cl->id) ?: collect();
+                $studentIds = $classStudents->pluck('id')->toArray();
                 
-                $total = $students->count();
-                $tamTinh = $transcripts->where('trang_thai_duyet', 'tam_tinh')->count();
-                $choCvht = $transcripts->where('trang_thai_duyet', 'cho_cvht_duyet')->count();
-                $choCtsv = $transcripts->where('trang_thai_duyet', 'cho_ctsv_duyet')->count();
-                $daKhoa = $transcripts->where('trang_thai_duyet', 'da_khoa')->count();
+                $total = $classStudents->count();
+                
+                $tamTinh = 0;
+                $choCvht = 0;
+                $choCtsv = 0;
+                $daKhoa = 0;
+                
+                foreach ($studentIds as $sid) {
+                    $studentTranscripts = $transcriptsGrouped->get($sid) ?: collect();
+                    foreach ($studentTranscripts as $t) {
+                        $status = $t->trang_thai_duyet;
+                        if ($status === 'tam_tinh') {
+                            $tamTinh++;
+                        } elseif ($status === 'cho_cvht_duyet') {
+                            $choCvht++;
+                        } elseif ($status === 'cho_ctsv_duyet') {
+                            $choCtsv++;
+                        } elseif ($status === 'da_khoa') {
+                            $daKhoa++;
+                        }
+                    }
+                }
 
                 $classStages[] = [
                     'class_name' => $cl->ten_lop,

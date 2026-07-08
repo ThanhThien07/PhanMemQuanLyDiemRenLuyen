@@ -285,24 +285,42 @@ class BackupService
             $tempSqlFile = $filePath;
         }
 
+        $handle = null;
         try {
             $pdo = DB::connection()->getPdo();
-            $sqlContent = file_get_contents($tempSqlFile);
-            if ($sqlContent === false) {
-                throw new Exception("Không thể đọc tệp SQL khôi phục.");
+            
+            $handle = fopen($tempSqlFile, 'r');
+            if (!$handle) {
+                throw new Exception("Không thể mở tệp SQL khôi phục.");
             }
 
             // Disable FK checks
             $pdo->exec("SET FOREIGN_KEY_CHECKS=0;");
 
-            // Execute query chunks
-            $queries = self::splitSqlStatements($sqlContent);
-            foreach ($queries as $query) {
-                $query = trim($query);
-                if (!empty($query)) {
-                    $pdo->exec($query);
+            // Đọc và chạy từng lệnh SQL để tối ưu hóa bộ nhớ RAM (O(1) Memory)
+            $currentQuery = '';
+            while (($line = fgets($handle)) !== false) {
+                $line = trim($line);
+                
+                // Skip comments and empty lines
+                if (empty($line) || str_starts_with($line, '--') || str_starts_with($line, '#') || str_starts_with($line, '/*')) {
+                    continue;
+                }
+
+                $currentQuery .= ' ' . $line;
+
+                if (str_ends_with($line, ';')) {
+                    $pdo->exec(trim($currentQuery));
+                    $currentQuery = '';
                 }
             }
+
+            if (!empty(trim($currentQuery))) {
+                $pdo->exec(trim($currentQuery));
+            }
+
+            fclose($handle);
+            $handle = null;
 
             // Re-enable FK checks
             $pdo->exec("SET FOREIGN_KEY_CHECKS=1;");
@@ -315,42 +333,13 @@ class BackupService
             return true;
 
         } catch (Exception $e) {
+            if ($handle) {
+                fclose($handle);
+            }
             if ($fileName !== 'temp_restore.sql' && file_exists(Storage::path('backups/temp_restore.sql'))) {
                 unlink(Storage::path('backups/temp_restore.sql'));
             }
             throw $e;
         }
-    }
-
-    /**
-     * Split sql contents into distinct query strings.
-     */
-    private static function splitSqlStatements($sql)
-    {
-        $lines = explode("\n", $sql);
-        $queries = [];
-        $currentQuery = '';
-
-        foreach ($lines as $line) {
-            $line = trim($line);
-            
-            // Skip comments and empty lines
-            if (empty($line) || str_starts_with($line, '--') || str_starts_with($line, '#') || str_starts_with($line, '/*')) {
-                continue;
-            }
-
-            $currentQuery .= ' ' . $line;
-
-            if (str_ends_with($line, ';')) {
-                $queries[] = $currentQuery;
-                $currentQuery = '';
-            }
-        }
-
-        if (!empty(trim($currentQuery))) {
-            $queries[] = $currentQuery;
-        }
-
-        return $queries;
     }
 }

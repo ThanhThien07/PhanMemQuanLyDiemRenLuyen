@@ -149,8 +149,8 @@
                       <td class="no-print">
                         @if($svNote)
                           @if(filter_var($svNote, FILTER_VALIDATE_URL))
-                            <a href="{{ $svNote }}" target="_blank" class="btn btn-xs btn-outline-info py-0 px-1 me-1" style="font-size: 11px;"><i class="bi bi-box-arrow-up-right"></i> Mở tab</a>
-                            <button type="button" class="btn btn-xs btn-outline-primary py-0 px-1" style="font-size: 11px;" onclick="previewEvidence('{{ $svNote }}')"><i class="bi bi-eye"></i> Xem nhanh</button>
+                            <a href="{{ $svNote }}" target="_blank" class="btn btn-outline-info py-0 px-1.5 me-1 text-[11px] rounded-md"><i class="bi bi-box-arrow-up-right"></i> Mở tab</a>
+                            <button type="button" class="btn btn-outline-primary py-0 px-1.5 text-[11px] rounded-md" onclick="previewEvidence('{{ $svNote }}')"><i class="bi bi-eye"></i> Xem nhanh</button>
                           @else
                             <span class="text-muted small" style="display: block; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $svNote }}">{{ $svNote }}</span>
                           @endif
@@ -427,12 +427,6 @@
   });
 </script>
 <style>
-  .btn-xs {
-    padding: 1px 5px;
-    font-size: 11px;
-    border-radius: 3px;
-  }
-
   /* Printable style rules */
   @media screen {
     .print-only {
