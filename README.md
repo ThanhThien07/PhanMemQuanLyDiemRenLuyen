@@ -68,6 +68,7 @@ PhanMemQuanLyDiemRenLuyen/
 |   `-- web.php                   # Định nghĩa tất cả URL và Middleware áp dụng
 |-- storage/                      # Chứa log hệ thống, session, cache và file uploads tạm
 |-- composer.json                 # Quản lý dependencies PHP
+|-- database.sql                  # Bản sao lưu/khởi tạo CSDL đầy đủ bằng tiếng Việt (Mục 2 nộp bài)
 `-- package.json / pnpm-lock.yaml # Quản lý dependencies JavaScript/Vite
 ```
 
@@ -98,6 +99,7 @@ PhanMemQuanLyDiemRenLuyen/
    ```bash
    php artisan db:seed
    ```
+   *Lưu ý (Mục 2 nộp bài):* Ngoài ra, bạn có thể import trực tiếp tệp `database.sql` ở thư mục gốc vào cơ sở dữ liệu để có đầy đủ cấu trúc bảng và toàn bộ dữ liệu mẫu đã được cấu hình sẵn.
 
 5. Chạy server phát triển (chạy đồng thời server PHP và Vite):
    ```bash
