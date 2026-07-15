@@ -1,10 +1,10 @@
 # SV-DRL
 
-Hệ thống Quản lý Điểm rèn luyện Sinh viên (SV-DRL) được xây dựng bằng Laravel 13 và MySQL/MariaDB, phục vụ quy trình đánh giá rèn luyện trực tuyến của nhà trường một cách minh bạch, tự động và nhanh chóng. Dự án bao gồm các phân hệ chính dành cho Sinh viên, Ban Cán sự lớp, Giảng viên/Cố vấn học tập (CVHT), phòng Công tác sinh viên (CTSV)/Khoa, và Quản trị viên (Admin).
+Hệ thống Quản lý Điểm rèn luyện Sinh viên (SV-DRL) được xây dựng bằng Laravel 13 và MySQL/MariaDB, phục vụ quy trình đánh giá rèn luyện trực tuyến của nhà trường một cách minh bạch, tự động và nhanh chóng. Dự án bao gồm các phân hệ chính dành cho Sinh viên, Ban Cán sự lớp, Giảng viên/Cố vấn học tập (CVHT), và phòng Công tác sinh viên (CTSV)/Khoa (đóng vai trò Quản trị hệ thống).
 
 - Phía sinh viên và ban cán sự: Tự chấm điểm rèn luyện, tải minh chứng, đăng ký hoạt động, điểm danh QR code thời gian thực, xem lịch sử và gửi khiếu nại.
 - Phía giảng viên/cố vấn học tập: Duyệt minh chứng, đánh giá, phản hồi và chốt điểm rèn luyện cho lớp chủ nhiệm.
-- Phía CTSV (Phòng Công tác sinh viên)/Khoa/Admin: Quản lý đợt đánh giá, hoạt động rèn luyện, phân công cố vấn, cấu hình học kỳ, thống kê & xuất báo cáo Excel, sao lưu và khôi phục dữ liệu hệ thống.
+- Phía CTSV (Phòng Công tác sinh viên)/Khoa (Quản trị hệ thống): Quản lý đợt đánh giá, hoạt động rèn luyện, phân công cố vấn, cấu hình học kỳ, thống kê & xuất báo cáo Excel, sao lưu và khôi phục dữ liệu hệ thống.
 
 ## 1. Tổng quan chức năng
 
@@ -25,7 +25,7 @@ Hệ thống Quản lý Điểm rèn luyện Sinh viên (SV-DRL) được xây d
 - **Chấm điểm & Phản hồi**: Chỉnh sửa điểm số thực tế dựa trên minh chứng và thái độ học tập của sinh viên, đồng thời nhập ý kiến phản hồi cụ thể.
 - **Chốt bảng điểm lớp**: Duyệt tổng thể phiếu điểm của cả lớp và chốt kết quả chuyển lên cấp CTSV/Khoa xét duyệt cuối cùng (`cho_ctsv_duyet`).
 
-### Phân hệ CTSV / Khoa
+### Phân hệ CTSV / Khoa (Quản trị hệ thống)
 - **Quản lý học kỳ & Đợt đánh giá**: Tạo mới học kỳ, cấu hình mốc thời gian bắt đầu và kết thúc của từng giai đoạn duyệt.
 - **Phân công cố vấn**: Phân công giảng viên phụ trách cố vấn học tập cho các lớp theo từng học kỳ.
 - **Quản lý hoạt động rèn luyện**: Tạo mới hoạt động, thiết lập điểm dự kiến, số lượng slot tối đa, và tự động sinh mã QR điểm danh (có tính năng làm mờ/khóa quét QR động bằng CSS blur).
@@ -34,11 +34,7 @@ Hệ thống Quản lý Điểm rèn luyện Sinh viên (SV-DRL) được xây d
   - Xem Dashboard trực quan thống kê tỷ lệ xếp loại rèn luyện và tiến độ của từng lớp.
   - Xuất báo cáo điểm rèn luyện ra file Excel (CSV) theo mẫu của nhà trường.
 - **Quản lý sao lưu (Backup & Restore)**: Thực hiện sao lưu dữ liệu thủ công hoặc tự động, tải file backup hoặc khôi phục dữ liệu hệ thống từ file SQL.
-
-### Phân hệ Admin (Quản trị hệ thống)
-- **Quản lý người dùng**: Thêm mới, cập nhật thông tin và phân quyền tài khoản (Sinh viên, Giảng viên, CTSV, Admin).
-- **Quản lý danh mục nền tảng**: Quản lý cơ cấu Khoa, Ngành học, Lớp học, Hệ đào tạo, Khóa học.
-- **Cấu hình bộ tiêu chí đánh giá**: Quản lý các tiêu chí rèn luyện chính, các tiêu chí con và giới hạn điểm tối đa của từng mục.
+- **Quản trị danh mục & phân quyền**: Quản lý cơ cấu Khoa, Ngành học, Lớp học, Hệ đào tạo, Khóa học, các tài khoản người dùng và bộ tiêu chí đánh giá hệ thống.
 
 ## 2. Công nghệ sử dụng
 
@@ -126,7 +122,7 @@ Hệ thống sử dụng mật khẩu chung là `password` cho tất cả các t
   - Email: `covan@sv.com`
   - Mật khẩu: `password`
 
-- **Phòng CTSV / Khoa / Admin**:
+- **Phòng CTSV / Khoa (Quản trị hệ thống)**:
   - Email: `ctsv@sv.com`
   - Mật khẩu: `password`
 
@@ -175,7 +171,7 @@ Hệ thống sử dụng mật khẩu chung là `password` cho tất cả các t
 - `/xet-duyet/bulk-approve`: Phê duyệt nhanh hàng loạt phiếu điểm (POST)
 - `/xet-duyet/unlock/{id}`: Mở khóa phiếu điểm rèn luyện đã chốt - dành cho CTSV (POST)
 
-### Quản lý cấu hình & Hệ thống (Chỉ dành cho CTSV/Admin)
+### Quản lý cấu hình & Hệ thống (Chỉ dành cho CTSV)
 - `/xet-duyet/phan-cong`: Giao diện và lưu phân công cố vấn học tập lớp (GET/POST)
 - `/xet-duyet/phan-cong/delete/{id}`: Xóa phân công cố vấn lớp (POST)
 - `/hoc-ky/settings`: Thiết lập thời gian các giai đoạn đánh giá rèn luyện (GET/POST)
