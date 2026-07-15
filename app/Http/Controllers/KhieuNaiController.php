@@ -130,7 +130,11 @@ class KhieuNaiController extends Controller
             $minhChungId = null;
             if ($request->hasFile("file_khieu_nai")) {
                 $file = $request->file("file_khieu_nai");
-                $fileName = time() . "_" . $file->getClientOriginalName();
+                $originalName = $file->getClientOriginalName();
+                $fileSize = $file->getSize();
+                $fileExtension = $file->getClientOriginalExtension();
+
+                $fileName = time() . "_" . $originalName;
                 $uploadPath = public_path("uploads/khieu_nai");
                 if (!file_exists($uploadPath)) {
                     mkdir($uploadPath, 0755, true);
@@ -139,10 +143,10 @@ class KhieuNaiController extends Controller
                 $filePath = "uploads/khieu_nai/" . $fileName;
 
                 $mc = MinhChung::create([
-                    "file_name" => $file->getClientOriginalName(),
+                    "file_name" => $originalName,
                     "file_path" => $filePath,
-                    "file_size" => $file->getSize(),
-                    "file_type" => $file->getClientOriginalExtension(),
+                    "file_size" => $fileSize,
+                    "file_type" => $fileExtension,
                 ]);
                 $minhChungId = $mc->id;
             }

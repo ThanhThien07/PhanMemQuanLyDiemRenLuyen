@@ -108,7 +108,11 @@ class MinhChungController extends Controller
 
         // Xử lý upload file
         $file = $request->file("file_minh_chung");
-        $fileName = time() . "_" . $file->getClientOriginalName();
+        $originalName = $file->getClientOriginalName();
+        $fileSize = $file->getSize();
+        $fileExtension = $file->getClientOriginalExtension();
+
+        $fileName = time() . "_" . $originalName;
         $uploadPath = public_path("uploads/minh_chung");
         if (!file_exists($uploadPath)) {
             mkdir($uploadPath, 0755, true);
@@ -117,12 +121,12 @@ class MinhChungController extends Controller
         $filePath = "uploads/minh_chung/" . $fileName;
 
         // Lưu thông tin vào DB sử dụng Transaction
-        DB::transaction(function () use ($request, $sinhVien, $file, $filePath) {
+        DB::transaction(function () use ($request, $sinhVien, $filePath, $originalName, $fileSize, $fileExtension) {
             $minhChung = MinhChung::create([
-                "file_name" => $file->getClientOriginalName(),
+                "file_name" => $originalName,
                 "file_path" => $filePath,
-                "file_size" => $file->getSize(),
-                "file_type" => $file->getClientOriginalExtension(),
+                "file_size" => $fileSize,
+                "file_type" => $fileExtension,
             ]);
 
             HoSoMinhChung::create([
