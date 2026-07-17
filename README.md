@@ -104,13 +104,62 @@ PhanMemQuanLyDiemRenLuyen/
 
 ---
 
-## 4. Yêu cầu môi trường
+## 4. Yêu cầu môi trường & Khả năng tương thích Server Trường
 
-- Laragon (Apache/Nginx + MySQL/MariaDB) hoặc môi trường PHP/MySQL độc lập.
-- PHP từ 8.3 trở lên.
-- MySQL 8.x hoặc MariaDB 10.x trở lên.
-- Composer 2.x trở lên.
-- Node.js (tối thiểu v18) & pnpm / npm.
+Hệ thống được thiết kế để dễ dàng triển khai trên các hạ tầng máy chủ tiêu chuẩn của các trường Đại học/Cao đẳng. Dưới đây là thông tin chi tiết về ngôn ngữ, cơ sở dữ liệu và máy chủ web để đối chiếu với cấu hình máy chủ sẵn có của nhà trường:
+
+### 1. Ngôn ngữ & Runtime (PHP)
+- **Ngôn ngữ chính**: **PHP >= 8.3** (Xây dựng trên nền tảng framework **Laravel 13**).
+- **Các PHP Extensions bắt buộc phải bật** (đã cấu hình mặc định trong hầu hết các máy chủ Web hoặc dễ dàng kích hoạt trong `php.ini`):
+  - `openssl` (Bảo mật, mã hóa dữ liệu)
+  - `pdo` & `pdo_mysql` (Kết nối cơ sở dữ liệu MySQL)
+  - `mbstring` (Xử lý chuỗi UTF-8 tiếng Việt)
+  - `xml` & `dom` (Xử lý dữ liệu XML/HTML)
+  - `curl` (Hỗ trợ gọi các API bên ngoài)
+  - `fileinfo` (Xác thực định dạng file minh chứng tải lên)
+  - `zip` (Giải nén và nén tệp tin phục vụ backup)
+  - `gd` hoặc `imagick` (Để xử lý ảnh minh chứng, sinh mã QR)
+- **Quản lý thư viện**: Composer 2.x trở lên.
+- **Biên dịch Frontend**: Node.js (tối thiểu v18) & pnpm / npm (chỉ cần thiết cho môi trường phát triển hoặc khi build lại assets, khi vận hành live có thể build trước và deploy thư mục `public/build` tĩnh).
+
+### 2. Cơ sở dữ liệu (Database)
+- **Hệ quản trị CSDL**: **MySQL (phiên bản 8.0 trở lên)** hoặc **MariaDB (phiên bản 10.4 trở lên)**.
+- **Cơ chế lưu trữ**: Sử dụng các câu lệnh SQL tiêu chuẩn của Eloquent ORM. Do đó, hệ thống hoàn toàn tương thích và chạy ổn định trên các dịch vụ MySQL dùng chung (Shared Database) hoặc MySQL Server chuyên dụng của nhà trường.
+- **Khởi tạo dữ liệu**: Hỗ trợ chạy các file migration của Laravel (`php artisan migrate`) hoặc import trực tiếp file SQL kết xuất sẵn đầy đủ dữ liệu mẫu `database.sql` đi kèm ở thư mục gốc.
+
+### 3. Máy chủ Web (Web Server Compatibility)
+Ứng dụng có thể vận hành tốt trên cả hệ điều hành **Windows Server** lẫn **Linux (Ubuntu, CentOS, RedHat, Debian...)**, tương thích tốt với các Web Server phổ biến:
+
+- **Apache Web Server** (Khuyến nghị cho Server trường dùng cPanel / DirectAdmin / Laragon / XAMPP):
+  - Hệ thống đã tích hợp sẵn tệp tin cấu hình [.htaccess](file:///e:/btap/laragon/www/PhanMemQuanLyDiemRenLuyen/public/.htaccess) trong thư mục `public/`.
+  - Cần đảm bảo đã bật module `mod_rewrite` trên Apache để hỗ trợ định tuyến sạch (Pretty URLs) của Laravel.
+- **Nginx Web Server** (Khuyến nghị cho Server Linux hiệu năng cao):
+  - Cấu hình server block (Virtual Host) của Nginx cần chuyển hướng toàn bộ request về tệp `index.php`. Đoạn cấu hình mẫu cơ bản:
+    ```nginx
+    server {
+        listen 80;
+        server_name diemrenluyen.school.edu.vn;
+        root /path/to/PhanMemQuanLyDiemRenLuyen/public;
+
+        index index.php index.html;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            include fastcgi_params;
+            fastcgi_pass unix:/var/run/php/php8.3-fpm.sock; # Hoặc địa chỉ IP 127.0.0.1:9000
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        }
+    }
+    ```
+- **IIS (Microsoft Internet Information Services)**:
+  - Nếu trường sử dụng Windows Server chạy IIS, cần cài đặt module **URL Rewrite** trên IIS và cấu hình file `web.config` tương ứng trỏ vào thư mục `public/`.
+
+> [!IMPORTANT]  
+> **Lưu ý cấu hình Root Directory**: Thư mục gốc của tên miền (Document Root) trên Web Server **bắt buộc phải trỏ vào thư mục `public/`** của dự án (ví dụ: `/var/www/PhanMemQuanLyDiemRenLuyen/public`), chứ không được trỏ vào thư mục cha bên ngoài để đảm bảo tính an toàn bảo mật cho mã nguồn. Tránh lộ các file cấu hình nhạy cảm như `.env` ra ngoài internet.
 
 ---
 
